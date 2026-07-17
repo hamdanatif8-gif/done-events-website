@@ -38,10 +38,17 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 a {
@@ -168,4 +175,38 @@ img {
 ::selection {
   background: var(--gold);
   color: var(--white);
+}
+
+/* ===== EVENT PHOTOGRAPHY (real imagery inside .img-placeholder) ===== */
+.img-placeholder {
+  position: relative;
+  isolation: isolate;
+}
+
+.event-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 1s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.event-img.loaded {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .event-img {
+    transition: opacity 0.4s ease;
+    transform: none;
+  }
+  .event-img.loaded {
+    transform: none;
+  }
 }

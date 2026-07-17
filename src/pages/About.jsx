@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { FaArrowRight, FaQuoteLeft } from 'react-icons/fa'
 import AnimatedSection from '../components/AnimatedSection'
+import EventImage from '../components/EventImage'
 import './About.css'
 
 const timeline = [
@@ -54,12 +55,8 @@ export default function About() {
       <section className="about-story section-padding">
         <div className="container about-story-grid">
           <AnimatedSection direction="left" className="about-story-images">
-            <div className="img-placeholder about-img-1">
-              <span>Done Events Team</span>
-            </div>
-            <div className="img-placeholder about-img-2">
-              <span>Behind the Scenes</span>
-            </div>
+            <EventImage name="corporate.jpg" alt="Done Events at a large-scale Dubai event" className="about-img-1" />
+            <EventImage name="catering.jpg" alt="Behind the scenes — hospitality service in motion" className="about-img-2" />
           </AnimatedSection>
           <AnimatedSection direction="right" className="about-story-content">
             <span className="section-label">Our Story</span>

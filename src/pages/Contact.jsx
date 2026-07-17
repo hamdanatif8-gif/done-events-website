@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaWhatsapp, FaArrowRight, FaClock } from 'react-icons/fa'
 import AnimatedSection from '../components/AnimatedSection'
+import EventImage from '../components/EventImage'
 import './Contact.css'
 
 const eventTypes = [
@@ -227,10 +228,12 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Map placeholder */}
+      {/* Location banner */}
       <section className="contact-map">
-        <div className="img-placeholder map-placeholder">
-          <span>Dubai, UAE — Map View</span>
+        <EventImage name="beach-skyline.jpg" alt="Dubai waterfront and skyline" className="map-placeholder" />
+        <div className="map-caption">
+          <FaMapMarkerAlt />
+          <span>Dubai, United Arab Emirates</span>
         </div>
       </section>
     </main>

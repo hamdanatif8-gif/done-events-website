@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { FaArrowRight, FaStar } from 'react-icons/fa'
 import AnimatedSection from '../components/AnimatedSection'
+import EventImage from '../components/EventImage'
 import './Home.css'
 
 const eventWorlds = [
@@ -134,9 +135,11 @@ export default function Home() {
       <section className="about-intro section-padding">
         <div className="container about-intro-grid">
           <AnimatedSection direction="left" className="about-intro-image">
-            <div className="img-placeholder img-tall">
-              <span>Premium Event Setup</span>
-            </div>
+            <EventImage
+              name="lounge.jpg"
+              alt="Warm, styled lounge at a premium Dubai event"
+              className="img-tall"
+            />
           </AnimatedSection>
           <AnimatedSection direction="right" className="about-intro-content">
             <span className="section-label">Who We Are</span>
@@ -199,45 +202,35 @@ export default function Home() {
 
           <div className="featured-grid">
             <AnimatedSection delay={0} className="featured-item featured-large">
-              <div className="img-placeholder img-featured">
-                <span>Grand Gala Night — Dubai Opera</span>
-              </div>
+              <EventImage name="corporate.jpg" alt="Grand gala night — corporate event at Dubai Opera" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Corporate</span>
                 <h3>Grand Gala Night</h3>
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.1} className="featured-item">
-              <div className="img-placeholder img-featured">
-                <span>Sunset Beach Festival</span>
-              </div>
+              <EventImage name="beach-brunch.jpg" alt="Sunset beach festival by the Dubai coastline" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Beach & Brunch</span>
                 <h3>Sunset Beach Festival</h3>
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.15} className="featured-item">
-              <div className="img-placeholder img-featured">
-                <span>Royal Wedding Celebration</span>
-              </div>
+              <EventImage name="candlelit.jpg" alt="Royal wedding celebration with candlelit florals" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Weddings</span>
                 <h3>Royal Wedding</h3>
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.2} className="featured-item">
-              <div className="img-placeholder img-featured">
-                <span>EDM Festival Production</span>
-              </div>
+              <EventImage name="entertainment.jpg" alt="Live entertainment and stage production" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Concerts</span>
                 <h3>EDM Festival</h3>
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.25} className="featured-item featured-wide">
-              <div className="img-placeholder img-featured">
-                <span>Luxury Brand Launch — The Palm</span>
-              </div>
+              <EventImage name="beach-skyline.jpg" alt="Luxury brand launch on The Palm with Dubai skyline" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Corporate</span>
                 <h3>Luxury Brand Launch</h3>
