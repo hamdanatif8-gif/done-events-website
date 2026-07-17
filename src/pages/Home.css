@@ -11,7 +11,36 @@
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #0a0015 0%, #1a0030 25%, #0d1b2a 50%, #1b2838 75%, #0a0015 100%);
+  background:
+    radial-gradient(120% 90% at 78% 18%, rgba(255, 224, 178, 0.12) 0%, transparent 42%),
+    radial-gradient(130% 80% at 50% 118%, rgba(224, 158, 120, 0.22) 0%, transparent 55%),
+    linear-gradient(170deg, #0a0018 0%, #150a2e 26%, #0e1b30 54%, #241a33 82%, #34252f 100%);
+}
+
+/* Warm horizon glow — the "day-to-night" dawn line low in the hero */
+.hero-horizon {
+  position: absolute;
+  left: 50%;
+  bottom: -8%;
+  width: 150%;
+  height: 46%;
+  transform: translateX(-50%);
+  background: radial-gradient(60% 100% at 50% 100%, rgba(240, 178, 116, 0.28) 0%, rgba(200, 120, 160, 0.1) 38%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Seamless melt into the cream stats bar below */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 22%;
+  background: linear-gradient(to bottom, transparent 0%, rgba(250, 247, 242, 0.35) 72%, var(--cream) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .hero-gradient-1 {
@@ -210,6 +239,74 @@
 @keyframes scrollPulse {
   0%, 100% { opacity: 0.3; height: 60px; }
   50% { opacity: 1; height: 80px; }
+}
+
+/* ===== SHOWREEL ===== */
+.showreel {
+  position: relative;
+  height: 70vh;
+  min-height: 460px;
+  max-height: 720px;
+  overflow: hidden;
+  background: #1a1a1a;
+  display: flex;
+  align-items: flex-end;
+}
+
+.showreel-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Legibility wash — warm, light-touch, only where the text sits (not a heavy blanket) */
+.showreel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(20, 14, 12, 0.62) 0%, rgba(20, 14, 12, 0.15) 32%, transparent 58%);
+  pointer-events: none;
+}
+
+.showreel-overlay {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 5% 8%;
+}
+
+.showreel-label {
+  color: var(--gold-light);
+  display: block;
+  margin-bottom: 14px;
+}
+
+.showreel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4.5vw, 3.4rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .showreel-video {
+    /* poster remains visible; nothing animates */
+  }
+}
+
+@media (max-width: 768px) {
+  .showreel {
+    height: 60vh;
+    min-height: 380px;
+  }
 }
 
 /* ===== STATS BAR ===== */

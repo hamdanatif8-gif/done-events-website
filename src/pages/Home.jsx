@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { FaArrowRight, FaStar } from 'react-icons/fa'
 import AnimatedSection from '../components/AnimatedSection'
 import EventImage from '../components/EventImage'
+import Showreel from '../components/Showreel'
 import './Home.css'
 
 const eventWorlds = [
@@ -61,6 +62,7 @@ export default function Home() {
             <div className="moon-crater moon-crater-3" />
           </div>
         </div>
+        <div className="hero-horizon" />
 
         <motion.div className="hero-content" style={{ y: heroY, opacity: heroOpacity }}>
           <motion.div
@@ -189,6 +191,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Cinematic Showreel */}
+      <Showreel />
 
       {/* Featured Work / Image Grid */}
       <section className="featured-work section-padding">
