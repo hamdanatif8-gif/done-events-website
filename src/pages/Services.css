@@ -69,9 +69,24 @@
   direction: ltr;
 }
 
+.service-image {
+  overflow: hidden;
+}
+
 .service-img {
   height: 500px;
   background: linear-gradient(135deg, var(--accent, var(--cream-dark)), #e8ddd0);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-image:hover .service-img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .service-image:hover .service-img {
+    transform: none;
+  }
 }
 
 .service-desc {

@@ -7,22 +7,22 @@ import './Portfolio.css'
 const categories = ['All', 'Beach & Brunch', 'Club Events', 'Corporate', 'Concerts', 'Catering', 'Weddings', 'Production']
 
 const projects = [
-  { id: 1, title: 'Sunset Beach Festival 2024', category: 'Beach & Brunch', desc: 'An immersive beachside celebration for 2000+ guests', size: 'large', photo: 'beach-brunch.jpg' },
+  { id: 1, title: 'Sunset Beach Festival 2024', category: 'Beach & Brunch', desc: 'An immersive beachside celebration for 2000+ guests', size: 'large', photo: 'beach.jpg' },
   { id: 2, title: 'Corporate Excellence Awards', category: 'Corporate', desc: 'Annual black-tie gala for Dubai\'s leading enterprises', photo: 'corporate.jpg' },
-  { id: 3, title: 'Neon Nights Club Launch', category: 'Club Events', desc: 'Grand opening of Dubai\'s newest nightlife destination', photo: 'entertainment.jpg' },
-  { id: 4, title: 'Symphony Under the Stars', category: 'Concerts', desc: 'Outdoor orchestral experience at Dubai Opera Garden', photo: 'entertainment.jpg' },
-  { id: 5, title: 'Al Maktoum Wedding', category: 'Weddings', desc: 'A fairytale celebration for 500 guests', size: 'tall', photo: 'candlelit.jpg' },
+  { id: 3, title: 'Neon Nights Club Launch', category: 'Club Events', desc: 'Grand opening of Dubai\'s newest nightlife destination', photo: 'club.jpg' },
+  { id: 4, title: 'Symphony Under the Stars', category: 'Concerts', desc: 'Outdoor orchestral experience at Dubai Opera Garden', photo: 'concerts.jpg' },
+  { id: 5, title: 'Al Maktoum Wedding', category: 'Weddings', desc: 'A fairytale celebration for 500 guests', size: 'tall', photo: 'weddings.jpg' },
   { id: 6, title: 'Dubai Food Festival', category: 'Catering', desc: 'Multi-venue culinary showcase across the city', photo: 'catering.jpg' },
   { id: 7, title: 'Tech Summit 2024', category: 'Corporate', desc: 'International technology conference for 3000 delegates', size: 'wide', photo: 'corporate.jpg' },
   { id: 8, title: 'Full Moon Party', category: 'Beach & Brunch', desc: 'Monthly beach celebration under the moonlight', photo: 'beach-skyline.jpg' },
-  { id: 9, title: 'Concert Production - Arena', category: 'Production', desc: 'Full technical production for arena concerts', photo: 'entertainment.jpg' },
-  { id: 10, title: 'Royal Garden Wedding', category: 'Weddings', desc: 'Lush garden wedding with floral canopy', photo: 'lounge.jpg' },
-  { id: 11, title: 'Brand Launch Experience', category: 'Corporate', desc: 'Luxury automobile launch at Burj Al Arab', size: 'large', photo: 'beach-skyline.jpg' },
-  { id: 12, title: 'Underground Sessions', category: 'Club Events', desc: 'Intimate electronic music experience', photo: 'lounge.jpg' },
+  { id: 9, title: 'Concert Production - Arena', category: 'Production', desc: 'Full technical production for arena concerts', photo: 'production.jpg' },
+  { id: 10, title: 'Royal Garden Wedding', category: 'Weddings', desc: 'Lush garden wedding with floral canopy', photo: 'candlelit.jpg' },
+  { id: 11, title: 'Brand Launch Experience', category: 'Corporate', desc: 'Luxury automobile launch at Burj Al Arab', size: 'large', photo: 'club.jpg' },
+  { id: 12, title: 'Underground Sessions', category: 'Club Events', desc: 'Intimate electronic music experience', photo: 'concerts.jpg' },
   { id: 13, title: 'Gourmet Gala', category: 'Catering', desc: 'Five-course dining experience with chef collaborations', photo: 'candlelit.jpg' },
-  { id: 14, title: 'Festival of Lights', category: 'Production', desc: 'Spectacular lighting installation at Dubai Creek', photo: 'corporate.jpg' },
-  { id: 15, title: 'Poolside Brunch Series', category: 'Beach & Brunch', desc: 'Weekly brunch concept at five-star resort', photo: 'beach-brunch.jpg' },
-  { id: 16, title: 'Live Nation Concerts', category: 'Concerts', desc: 'Major artist concerts and live performances', size: 'tall', photo: 'entertainment.jpg' },
+  { id: 14, title: 'Festival of Lights', category: 'Production', desc: 'Spectacular lighting installation at Dubai Creek', photo: 'production.jpg' },
+  { id: 15, title: 'Poolside Brunch Series', category: 'Beach & Brunch', desc: 'Weekly brunch concept at five-star resort', photo: 'beach.jpg' },
+  { id: 16, title: 'Live Nation Concerts', category: 'Concerts', desc: 'Major artist concerts and live performances', size: 'tall', photo: 'concerts.jpg' },
 ]
 
 export default function Portfolio() {

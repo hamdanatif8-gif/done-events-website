@@ -230,7 +230,7 @@ export default function Contact() {
 
       {/* Location banner */}
       <section className="contact-map">
-        <EventImage name="beach-skyline.jpg" alt="Dubai waterfront and skyline" className="map-placeholder" />
+        <EventImage name="beach.jpg" alt="Dubai waterfront and skyline" className="map-placeholder" />
         <div className="map-caption">
           <FaMapMarkerAlt />
           <span>Dubai, United Arab Emirates</span>

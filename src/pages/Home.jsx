@@ -136,8 +136,8 @@ export default function Home() {
         <div className="container about-intro-grid">
           <AnimatedSection direction="left" className="about-intro-image">
             <EventImage
-              name="lounge.jpg"
-              alt="Warm, styled lounge at a premium Dubai event"
+              name="candlelit.jpg"
+              alt="Warm, candlelit table styling at a premium Dubai event"
               className="img-tall"
             />
           </AnimatedSection>
@@ -209,21 +209,21 @@ export default function Home() {
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.1} className="featured-item">
-              <EventImage name="beach-brunch.jpg" alt="Sunset beach festival by the Dubai coastline" className="img-featured" />
+              <EventImage name="beach.jpg" alt="Sunset beach festival by the Dubai coastline" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Beach & Brunch</span>
                 <h3>Sunset Beach Festival</h3>
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.15} className="featured-item">
-              <EventImage name="candlelit.jpg" alt="Royal wedding celebration with candlelit florals" className="img-featured" />
+              <EventImage name="weddings.jpg" alt="Royal wedding celebration in a Dubai ballroom" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Weddings</span>
                 <h3>Royal Wedding</h3>
               </div>
             </AnimatedSection>
             <AnimatedSection delay={0.2} className="featured-item">
-              <EventImage name="entertainment.jpg" alt="Live entertainment and stage production" className="img-featured" />
+              <EventImage name="concerts.jpg" alt="Live entertainment and stage production" className="img-featured" />
               <div className="featured-overlay">
                 <span className="featured-cat">Concerts</span>
                 <h3>EDM Festival</h3>

@@ -56,7 +56,7 @@ export default function About() {
         <div className="container about-story-grid">
           <AnimatedSection direction="left" className="about-story-images">
             <EventImage name="corporate.jpg" alt="Done Events at a large-scale Dubai event" className="about-img-1" />
-            <EventImage name="catering.jpg" alt="Behind the scenes — hospitality service in motion" className="about-img-2" />
+            <EventImage name="production.jpg" alt="Behind the scenes — technical production in motion" className="about-img-2" />
           </AnimatedSection>
           <AnimatedSection direction="right" className="about-story-content">
             <span className="section-label">Our Story</span>
