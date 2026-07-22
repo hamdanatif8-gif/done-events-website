@@ -38,16 +38,9 @@ export default function Home() {
         <HeroVideo />
 
         <motion.div className="hero-content">
-          <motion.div
-            {...reveal(0.18, 14, 0.62)}
-            className="hero-label"
-          >
-            Dubai Events & Entertainment
-          </motion.div>
-
           <motion.h1
             className="hero-title"
-            {...reveal(0.3, 22, 0.74)}
+            {...reveal(0.26, 22, 0.8)}
           >
             Day to Night.<br />
             <span className="hero-highlight">Done Right.</span>
@@ -55,10 +48,9 @@ export default function Home() {
 
           <motion.p
             className="hero-subtitle"
-            {...reveal(0.44, 16, 0.68)}
+            {...reveal(0.42, 16, 0.7)}
           >
-            Creative direction, planning, hospitality and production brought together
-            for events across Dubai and beyond.
+            Creative direction, production and hospitality for landmark events in Dubai.
           </motion.p>
 
           <motion.div
@@ -68,21 +60,7 @@ export default function Home() {
             <Link to="/portfolio" className="btn btn-primary hero-btn">
               Explore Our Work <FaArrowRight />
             </Link>
-            <Link to="/contact" className="btn btn-outline hero-btn-outline">
-              Start Your Event
-            </Link>
           </motion.div>
-        </motion.div>
-
-        <motion.div
-          className="hero-scroll-indicator"
-          initial={reduceMotion ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: reduceMotion ? 0 : 0.6, delay: reduceMotion ? 0 : 0.9 }}
-          aria-hidden="true"
-        >
-          <span>Scroll</span>
-          <div className="scroll-line" />
         </motion.div>
       </section>
 
