@@ -1,179 +1,118 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { FaArrowRight, FaQuoteLeft } from 'react-icons/fa'
-import AnimatedSection from '../components/AnimatedSection'
+import { FaArrowRight } from 'react-icons/fa'
 import EventImage from '../components/EventImage'
+import AnimatedSection from '../components/AnimatedSection'
 import './About.css'
 
-const timeline = [
-  { year: '2009', title: 'The Beginning', desc: 'Founded in Dubai with a vision to transform the events landscape in the Middle East.' },
-  { year: '2012', title: 'First Major Milestone', desc: 'Delivered our 100th event and expanded into corporate entertainment.' },
-  { year: '2015', title: 'Seven Worlds Born', desc: 'Launched our signature seven event worlds framework, defining our unique approach.' },
-  { year: '2018', title: 'Regional Expansion', desc: 'Extended operations across the UAE and into neighboring GCC countries.' },
-  { year: '2021', title: '1000+ Events', desc: 'Celebrated our 1000th event milestone with a star-studded anniversary gala.' },
-  { year: '2024', title: 'Industry Leaders', desc: 'Recognized as one of Dubai\'s top event management companies with 1500+ events delivered.' },
-]
-
 const values = [
-  { title: 'Excellence', desc: 'Every detail matters. We pursue perfection in every event we create, from the grandest gesture to the smallest touch.', icon: '✦' },
-  { title: 'Innovation', desc: 'We push boundaries and embrace new ideas, technologies, and approaches to create events that set new standards.', icon: '◆' },
-  { title: 'Passion', desc: 'Events are not just our business — they are our calling. Every celebration ignites our creative fire.', icon: '♦' },
-  { title: 'Integrity', desc: 'Trust is the foundation of every relationship. We deliver on our promises, every single time.', icon: '●' },
+  { number: '01', title: 'Excellence', desc: 'Every detail is considered in relation to the whole experience.' },
+  { number: '02', title: 'Originality', desc: 'Each event starts with its own audience, setting and reason to exist.' },
+  { number: '03', title: 'Care', desc: 'Thoughtful planning and clear communication guide every stage of delivery.' },
+  { number: '04', title: 'Integrity', desc: 'Decisions stay practical, transparent and aligned with the event vision.' },
 ]
 
-const team = [
-  { name: 'Ahmed Al Rashid', role: 'Founder & CEO', initial: 'A' },
-  { name: 'Sophia Chen', role: 'Creative Director', initial: 'S' },
-  { name: 'Omar Hassan', role: 'Head of Production', initial: 'O' },
-  { name: 'Maria Santos', role: 'Client Relations Director', initial: 'M' },
-  { name: 'David Kim', role: 'Technical Director', initial: 'D' },
-  { name: 'Layla Mahmoud', role: 'Events Manager', initial: 'L' },
+const process = [
+  { number: '01', title: 'Listen', desc: 'Understand the audience, the purpose and the feeling the event should create.' },
+  { number: '02', title: 'Shape', desc: 'Turn the brief into a focused creative and operational direction.' },
+  { number: '03', title: 'Coordinate', desc: 'Bring venues, hospitality, entertainment and production into one plan.' },
+  { number: '04', title: 'Deliver', desc: 'Manage the live experience with clarity, care and attention to detail.' },
 ]
 
 export default function About() {
   return (
     <main className="about-page">
-      {/* Hero */}
       <section className="page-hero">
         <div className="page-hero-bg" />
         <motion.div
           className="page-hero-content"
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span className="section-label">About Us</span>
-          <h1 className="page-hero-title">The Story Behind<br />The Spectacle</h1>
+          <span className="section-label">About DONE</span>
+          <h1 className="page-hero-title">The Thinking Behind<br />The Experience</h1>
           <p className="page-hero-sub">
-            15+ years of passion, creativity, and unwavering dedication to crafting
-            Dubai's most extraordinary events.
+            Creative direction, planning, hospitality and production working as one.
           </p>
         </motion.div>
       </section>
 
-      {/* Story Section */}
       <section className="about-story section-padding">
-        <div className="container about-story-grid">
-          <AnimatedSection direction="left" className="about-story-images">
-            <EventImage name="corporate.jpg" alt="Done Events at a large-scale Dubai event" className="about-img-1" />
-            <EventImage name="production.jpg" alt="Behind the scenes — technical production in motion" className="about-img-2" />
-          </AnimatedSection>
-          <AnimatedSection direction="right" className="about-story-content">
-            <span className="section-label">Our Story</span>
-            <h2 className="section-title">From a Dream to<br />Dubai's Finest</h2>
+        <AnimatedSection className="container about-story-grid">
+          <div className="about-story-images">
+            <EventImage name="corporate.jpg" alt="A large-scale DONE Events environment" className="about-img-1" />
+            <EventImage name="production.jpg" alt="Technical event production in progress" className="about-img-2" />
+          </div>
+          <div className="about-story-content">
+            <span className="section-label">Our Approach</span>
+            <h2 className="section-title">Built Around<br />the Experience</h2>
             <p>
-              What began as a bold dream in 2009 has blossomed into one of Dubai's most
-              respected event management companies. Done Events & Entertainment was founded
-              on a simple belief: that every event has the power to create lasting memories.
+              DONE Events & Entertainment brings every moving part of an event into one
+              clear direction. The creative idea, guest journey, hospitality and technical
+              delivery are considered together from the beginning.
             </p>
             <p>
-              Over the years, we've evolved from a small team of passionate event enthusiasts
-              into a full-service entertainment powerhouse. Our seven event worlds represent
-              the breadth of our expertise, each refined through hundreds of successful events.
+              That joined-up approach creates events that feel confident and natural,
+              whether the format is corporate, private, hospitality-led or live entertainment.
             </p>
-            <div className="about-quote">
-              <FaQuoteLeft className="quote-icon" />
-              <blockquote>
-                "We don't just plan events. We architect moments that become part of
-                people's life stories."
-              </blockquote>
-              <cite>— Ahmed Al Rashid, Founder & CEO</cite>
+            <div className="about-principle">
+              <span>Day to Night. Done Right.</span>
+              <p>One standard from the first conversation to the final guest departure.</p>
             </div>
-          </AnimatedSection>
-        </div>
+          </div>
+        </AnimatedSection>
       </section>
 
-      {/* Values */}
       <section className="about-values section-padding">
-        <div className="container">
-          <AnimatedSection>
-            <div className="section-header">
-              <span className="section-label">Our Values</span>
-              <h2 className="section-title">What Drives<br />Everything We Do</h2>
-            </div>
-          </AnimatedSection>
+        <AnimatedSection className="container">
+          <div className="section-header">
+            <span className="section-label">Our Values</span>
+            <h2 className="section-title">What Guides the Work</h2>
+          </div>
           <div className="values-grid">
-            {values.map((v, i) => (
-              <AnimatedSection key={v.title} delay={i * 0.1}>
-                <div className="value-card">
-                  <span className="value-icon">{v.icon}</span>
-                  <h3 className="value-title">{v.title}</h3>
-                  <p className="value-desc">{v.desc}</p>
-                </div>
-              </AnimatedSection>
+            {values.map((value) => (
+              <article key={value.title} className="value-card">
+                <span className="value-number">{value.number}</span>
+                <h3 className="value-title">{value.title}</h3>
+                <p className="value-desc">{value.desc}</p>
+              </article>
             ))}
           </div>
-        </div>
+        </AnimatedSection>
       </section>
 
-      {/* Timeline */}
-      <section className="about-timeline section-padding">
-        <div className="container">
-          <AnimatedSection>
-            <div className="section-header">
-              <span className="section-label">Our Journey</span>
-              <h2 className="section-title light">15+ Years of<br />Making Magic</h2>
-            </div>
-          </AnimatedSection>
-          <div className="timeline">
-            {timeline.map((item, i) => (
-              <AnimatedSection key={item.year} delay={i * 0.1} direction={i % 2 === 0 ? 'left' : 'right'}>
-                <div className={`timeline-item ${i % 2 === 0 ? 'left' : 'right'}`}>
-                  <div className="timeline-content">
-                    <span className="timeline-year">{item.year}</span>
-                    <h3 className="timeline-title">{item.title}</h3>
-                    <p className="timeline-desc">{item.desc}</p>
-                  </div>
-                  <div className="timeline-dot" />
-                </div>
-              </AnimatedSection>
-            ))}
-            <div className="timeline-line" />
+      <section className="about-process section-padding">
+        <AnimatedSection className="container process-layout">
+          <div className="process-heading">
+            <span className="section-label">How We Work</span>
+            <h2 className="section-title light">A Clear Path<br />from Brief to Live</h2>
           </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="about-team section-padding">
-        <div className="container">
-          <AnimatedSection>
-            <div className="section-header">
-              <span className="section-label">Our Team</span>
-              <h2 className="section-title">The People Behind<br />The Magic</h2>
-            </div>
-          </AnimatedSection>
-          <div className="team-grid">
-            {team.map((member, i) => (
-              <AnimatedSection key={member.name} delay={i * 0.08}>
-                <div className="team-card">
-                  <div className="team-avatar">
-                    <span>{member.initial}</span>
-                  </div>
-                  <h3 className="team-name">{member.name}</h3>
-                  <p className="team-role">{member.role}</p>
+          <div className="process-list">
+            {process.map((step) => (
+              <article key={step.title} className="process-item">
+                <span>{step.number}</span>
+                <div>
+                  <h3>{step.title}</h3>
+                  <p>{step.desc}</p>
                 </div>
-              </AnimatedSection>
+              </article>
             ))}
           </div>
-        </div>
+        </AnimatedSection>
       </section>
 
-      {/* CTA */}
       <section className="about-cta section-padding">
-        <div className="container">
-          <AnimatedSection>
-            <div className="cta-content">
-              <span className="section-label">Join Our Story</span>
-              <h2 className="cta-title">Let's Write the<br />Next Chapter Together</h2>
-              <p className="cta-text">
-                Every great event starts with a conversation. Let's start ours.
-              </p>
-              <Link to="/contact" className="btn btn-primary">
-                Get in Touch <FaArrowRight />
-              </Link>
-            </div>
-          </AnimatedSection>
-        </div>
+        <AnimatedSection className="container">
+          <div className="cta-content">
+            <span className="section-label">Start a Conversation</span>
+            <h2 className="cta-title">Let’s Shape the<br />Next Experience Together</h2>
+            <p className="cta-text">Every strong event starts with a clear brief.</p>
+            <Link to="/contact" className="btn btn-primary">
+              Get in Touch <FaArrowRight />
+            </Link>
+          </div>
+        </AnimatedSection>
       </section>
     </main>
   )

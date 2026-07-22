@@ -8,80 +8,79 @@ import './Services.css'
 const services = [
   {
     id: 'beach-brunch',
+    number: '01',
     title: 'Beach & Brunch',
     subtitle: 'Sun, Sand & Celebration',
-    desc: 'Transform any waterfront venue into a paradise of leisure and luxury. Our beach and brunch events combine gourmet dining, live entertainment, and the perfect ambiance for unforgettable daytime celebrations.',
-    features: ['Beachfront venue curation', 'Live DJ & entertainment', 'Gourmet brunch menus', 'Décor & styling', 'VIP lounge setups'],
+    desc: 'Waterfront gatherings designed around relaxed hospitality, considered styling, dining, and live entertainment.',
+    features: ['Beachfront venue curation', 'Live DJ & entertainment', 'Brunch menus', 'Décor & styling', 'VIP lounge setups'],
     image: 'Beach party setup with elegant decor',
     photo: 'beach.jpg',
-    accent: '#e8d5b7',
   },
   {
     id: 'club-events',
+    number: '02',
     title: 'Club Events',
-    subtitle: 'Nightlife Redefined',
-    desc: 'From exclusive launch parties to weekly nightlife concepts, we create electric atmospheres that keep Dubai talking. Our club events are where energy meets elegance.',
-    features: ['Artist & DJ booking', 'Sound & lighting design', 'Brand activations', 'VIP management', 'Marketing & promotion'],
+    subtitle: 'Nightlife Refined',
+    desc: 'Nightlife concepts that balance energy, atmosphere, guest flow, entertainment, and polished production.',
+    features: ['Artist & DJ booking', 'Sound & lighting design', 'Brand activations', 'VIP management', 'Guest experience planning'],
     image: 'Nightclub event with colorful lighting',
     photo: 'club.jpg',
-    accent: '#d4c5e8',
   },
   {
     id: 'corporate',
+    number: '03',
     title: 'Corporate Events',
     subtitle: 'Business Meets Brilliance',
-    desc: 'Elevate your corporate presence with events that command respect and inspire action. From intimate board dinners to large-scale conferences, every detail reflects your brand\'s excellence.',
+    desc: 'Brand-led business events planned with clear communication, precise coordination, and a strong guest experience.',
     features: ['Conference management', 'Product launches', 'Award ceremonies', 'Team building', 'Gala dinners'],
     image: 'Corporate gala dinner setup',
     photo: 'corporate.jpg',
-    accent: '#c5d8e8',
   },
   {
     id: 'concerts',
+    number: '04',
     title: 'Concerts & Live Shows',
-    subtitle: 'World-Class Entertainment',
-    desc: 'Bringing the world\'s biggest names to Dubai\'s most iconic stages. Our concert production expertise ensures every note resonates and every moment captivates.',
-    features: ['Artist management', 'Stage production', 'Ticketing solutions', 'Sound engineering', 'Security planning'],
+    subtitle: 'Live Entertainment',
+    desc: 'Live shows coordinated across artists, staging, sound, lighting, audience movement, and operational planning.',
+    features: ['Artist coordination', 'Stage production', 'Show planning', 'Sound engineering', 'Security planning'],
     image: 'Concert stage with dramatic lighting',
     photo: 'concerts.jpg',
-    accent: '#e8c5c5',
   },
   {
     id: 'catering',
+    number: '05',
     title: 'Catering & Hospitality',
-    subtitle: 'Culinary Excellence',
-    desc: 'Every great event deserves exceptional cuisine. Our catering and hospitality division delivers world-class dining experiences that tantalize every palate.',
+    subtitle: 'Considered Hospitality',
+    desc: 'Dining and hospitality experiences shaped around the event format, venue, service rhythm, and guest needs.',
     features: ['Bespoke menu design', 'International cuisine', 'Mixology & beverages', 'Service staff', 'Venue catering'],
     image: 'Elegant catering display',
     photo: 'catering.jpg',
-    accent: '#c5e8d4',
   },
   {
     id: 'weddings',
+    number: '06',
     title: 'Private & Weddings',
-    subtitle: 'Dreams Made Real',
-    desc: 'Your most important celebration deserves nothing less than perfection. We craft bespoke wedding experiences and private celebrations that tell your unique love story.',
+    subtitle: 'Personal Celebrations',
+    desc: 'Weddings and private celebrations planned around the people, setting, details, and moments that matter most.',
     features: ['Full wedding planning', 'Venue selection', 'Floral & décor design', 'Entertainment curation', 'Day-of coordination'],
     image: 'Luxury wedding setup',
     photo: 'weddings.jpg',
-    accent: '#f0e0d0',
   },
   {
     id: 'production',
+    number: '07',
     title: 'Production & Technical',
-    subtitle: 'Behind the Magic',
-    desc: 'State-of-the-art technical production that brings any vision to life. From intimate setups to arena-scale productions, our technical team delivers flawless execution.',
+    subtitle: 'Technical Delivery',
+    desc: 'Technical production that supports the creative idea with reliable staging, lighting, audio, video, and structures.',
     features: ['Stage & set design', 'AV engineering', 'Lighting design', 'LED & video walls', 'Rigging & structures'],
     image: 'Technical production setup',
     photo: 'production.jpg',
-    accent: '#d8d4e8',
   },
 ]
 
 export default function Services() {
   return (
     <main className="services-page">
-      {/* Hero */}
       <section className="page-hero">
         <div className="page-hero-bg" />
         <motion.div
@@ -93,38 +92,39 @@ export default function Services() {
           <span className="section-label">Our Services</span>
           <h1 className="page-hero-title">Seven Worlds of<br />Entertainment</h1>
           <p className="page-hero-sub">
-            Each world represents a unique facet of our expertise, perfected
-            over 1500+ events and 15+ years of excellence.
+            Seven connected disciplines, shaped around the needs of each event.
           </p>
         </motion.div>
       </section>
 
-      {/* Services List */}
       <section className="services-list">
-        {services.map((service, i) => (
-          <div key={service.id} id={service.id} className={`service-section section-padding ${i % 2 === 1 ? 'alt-bg' : ''}`}>
+        {services.map((service, index) => (
+          <div key={service.id} id={service.id} className={`service-section section-padding ${index % 2 === 1 ? 'alt-bg' : ''}`}>
             <div className="container">
-              <div className={`service-grid ${i % 2 === 1 ? 'reverse' : ''}`}>
-                <AnimatedSection direction={i % 2 === 0 ? 'left' : 'right'} className="service-image">
+              <div className={`service-grid ${index % 2 === 1 ? 'reverse' : ''}`}>
+                <AnimatedSection className="service-image">
                   <EventImage
                     name={service.photo}
                     alt={service.image}
                     className="service-img"
-                    style={{ '--accent': service.accent }}
                   />
                 </AnimatedSection>
-                <AnimatedSection direction={i % 2 === 0 ? 'right' : 'left'} className="service-content">
+                <AnimatedSection className="service-content">
+                  <span className="service-number" aria-hidden="true">{service.number}</span>
                   <span className="section-label">{service.subtitle}</span>
                   <h2 className="section-title">{service.title}</h2>
                   <p className="service-desc">{service.desc}</p>
                   <ul className="service-features">
-                    {service.features.map(f => (
-                      <li key={f}><FaCheckCircle className="check-icon" /> {f}</li>
+                    {service.features.map((feature) => (
+                      <li key={feature}><FaCheckCircle className="check-icon" /> {feature}</li>
                     ))}
                   </ul>
-                  <Link to="/contact" className="btn btn-dark">
-                    Enquire Now <FaArrowRight />
-                  </Link>
+                  <div className="service-actions">
+                    <Link to="/contact" className="btn btn-dark">
+                      Enquire Now <FaArrowRight />
+                    </Link>
+                    <Link to="/portfolio" className="service-work-link">View Selected Work</Link>
+                  </div>
                 </AnimatedSection>
               </div>
             </div>
@@ -132,16 +132,14 @@ export default function Services() {
         ))}
       </section>
 
-      {/* CTA */}
       <section className="services-cta section-padding">
         <div className="container">
           <AnimatedSection>
             <div className="cta-content">
-              <span className="section-label">Can't Decide?</span>
-              <h2 className="cta-title">We'll Help You Find<br />Your Perfect Event</h2>
+              <span className="section-label">Not Sure Where to Start?</span>
+              <h2 className="cta-title">Let's Shape the Right<br />Approach Together</h2>
               <p className="cta-text">
-                Tell us your vision and we'll craft a bespoke package that combines
-                elements from all our event worlds.
+                Share the essentials and we'll help connect the services your event needs.
               </p>
               <Link to="/contact" className="btn btn-primary">
                 Get in Touch <FaArrowRight />

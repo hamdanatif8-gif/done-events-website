@@ -10,14 +10,13 @@ export default function WhatsAppButton() {
       rel="noopener noreferrer"
       className="whatsapp-btn"
       aria-label="Chat on WhatsApp"
-      initial={{ scale: 0, opacity: 0 }}
+      initial={{ scale: 0.96, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: 1.5, type: 'spring', stiffness: 200 }}
-      whileHover={{ scale: 1.1 }}
+      transition={{ delay: 0.6, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+      whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
       <FaWhatsapp />
-      <span className="whatsapp-pulse" />
     </motion.a>
   )
 }

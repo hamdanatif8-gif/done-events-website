@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
 import { HiMenuAlt3, HiX } from 'react-icons/hi'
 import './Navbar.css'
 
@@ -16,10 +16,12 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+  const reduceMotion = useReducedMotion()
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -29,20 +31,27 @@ export default function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setMobileOpen(false)
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleKeyDown)
+    }
   }, [mobileOpen])
 
   return (
     <>
       <motion.nav
-        className={`navbar ${scrolled ? 'scrolled' : ''}`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+        className={`navbar ${scrolled ? 'scrolled' : ''} ${mobileOpen ? 'menu-open' : ''}`}
+        aria-label="Primary navigation"
+        initial={reduceMotion ? false : { opacity: 0, y: -18 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: reduceMotion ? 0 : 0.52, ease: [0.22, 1, 0.36, 1] }}
       >
         <div className="navbar-inner">
-          <Link to="/" className="navbar-logo">
-            <span className="logo-icon">D</span>
+          <Link to="/" className="navbar-logo" aria-label="DONE Events & Entertainment home">
             <div className="logo-text">
               <span className="logo-name">DONE</span>
               <span className="logo-sub">Events & Entertainment</span>
@@ -55,6 +64,7 @@ export default function Navbar() {
                 key={link.path}
                 to={link.path}
                 className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+                aria-current={location.pathname === link.path ? 'page' : undefined}
               >
                 {link.label}
               </Link>
@@ -64,9 +74,12 @@ export default function Navbar() {
           <Link to="/contact" className="navbar-cta">Get in Touch</Link>
 
           <button
+            type="button"
             className="mobile-toggle"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileOpen ? <HiX /> : <HiMenuAlt3 />}
           </button>
@@ -76,11 +89,12 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            id="mobile-navigation"
             className="mobile-menu"
-            initial={{ opacity: 0, x: '100%' }}
+            initial={reduceMotion ? false : { opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+            exit={reduceMotion ? undefined : { opacity: 0, x: '100%' }}
+            transition={{ duration: reduceMotion ? 0 : 0.3, ease: [0.4, 0, 0.2, 1] }}
           >
             <div className="mobile-menu-inner">
               {navLinks.map((link, i) => (
@@ -93,6 +107,7 @@ export default function Navbar() {
                   <Link
                     to={link.path}
                     className={`mobile-link ${location.pathname === link.path ? 'active' : ''}`}
+                    aria-current={location.pathname === link.path ? 'page' : undefined}
                   >
                     {link.label}
                   </Link>

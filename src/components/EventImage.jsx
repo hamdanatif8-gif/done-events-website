@@ -11,6 +11,8 @@ export default function EventImage({ name, alt, className = '', style, eager = f
       <img
         src={img(name)}
         alt={alt}
+        width="1600"
+        height="900"
         className={`event-img${loaded ? ' loaded' : ''}`}
         loading={eager ? 'eager' : 'lazy'}
         decoding="async"

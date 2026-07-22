@@ -1,24 +1,15 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 
-export default function AnimatedSection({ children, className = '', delay = 0, direction = 'up' }) {
-  const directions = {
-    up: { y: 60, x: 0 },
-    down: { y: -60, x: 0 },
-    left: { y: 0, x: 60 },
-    right: { y: 0, x: -60 },
-  }
+export default function AnimatedSection({ children, className = '', delay = 0 }) {
+  const reduceMotion = useReducedMotion()
 
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, ...directions[direction] }}
-      whileInView={{ opacity: 1, y: 0, x: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
+      initial={reduceMotion ? false : { opacity: 0.9, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12, margin: '0px 0px -6% 0px' }}
+      transition={{ duration: reduceMotion ? 0 : 0.62, delay: reduceMotion ? 0 : delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </motion.div>

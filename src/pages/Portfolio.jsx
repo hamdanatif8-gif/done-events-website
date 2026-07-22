@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion'
+import { FaArrowRight } from 'react-icons/fa'
 import AnimatedSection from '../components/AnimatedSection'
 import EventImage from '../components/EventImage'
 import './Portfolio.css'
@@ -7,26 +9,20 @@ import './Portfolio.css'
 const categories = ['All', 'Beach & Brunch', 'Club Events', 'Corporate', 'Concerts', 'Catering', 'Weddings', 'Production']
 
 const projects = [
-  { id: 1, title: 'Sunset Beach Festival 2024', category: 'Beach & Brunch', desc: 'An immersive beachside celebration for 2000+ guests', size: 'large', photo: 'beach.jpg' },
-  { id: 2, title: 'Corporate Excellence Awards', category: 'Corporate', desc: 'Annual black-tie gala for Dubai\'s leading enterprises', photo: 'corporate.jpg' },
-  { id: 3, title: 'Neon Nights Club Launch', category: 'Club Events', desc: 'Grand opening of Dubai\'s newest nightlife destination', photo: 'club.jpg' },
-  { id: 4, title: 'Symphony Under the Stars', category: 'Concerts', desc: 'Outdoor orchestral experience at Dubai Opera Garden', photo: 'concerts.jpg' },
-  { id: 5, title: 'Al Maktoum Wedding', category: 'Weddings', desc: 'A fairytale celebration for 500 guests', size: 'tall', photo: 'weddings.jpg' },
-  { id: 6, title: 'Dubai Food Festival', category: 'Catering', desc: 'Multi-venue culinary showcase across the city', photo: 'catering.jpg' },
-  { id: 7, title: 'Tech Summit 2024', category: 'Corporate', desc: 'International technology conference for 3000 delegates', size: 'wide', photo: 'corporate.jpg' },
-  { id: 8, title: 'Full Moon Party', category: 'Beach & Brunch', desc: 'Monthly beach celebration under the moonlight', photo: 'beach-skyline.jpg' },
-  { id: 9, title: 'Concert Production - Arena', category: 'Production', desc: 'Full technical production for arena concerts', photo: 'production.jpg' },
-  { id: 10, title: 'Royal Garden Wedding', category: 'Weddings', desc: 'Lush garden wedding with floral canopy', photo: 'candlelit.jpg' },
-  { id: 11, title: 'Brand Launch Experience', category: 'Corporate', desc: 'Luxury automobile launch at Burj Al Arab', size: 'large', photo: 'club.jpg' },
-  { id: 12, title: 'Underground Sessions', category: 'Club Events', desc: 'Intimate electronic music experience', photo: 'concerts.jpg' },
-  { id: 13, title: 'Gourmet Gala', category: 'Catering', desc: 'Five-course dining experience with chef collaborations', photo: 'candlelit.jpg' },
-  { id: 14, title: 'Festival of Lights', category: 'Production', desc: 'Spectacular lighting installation at Dubai Creek', photo: 'production.jpg' },
-  { id: 15, title: 'Poolside Brunch Series', category: 'Beach & Brunch', desc: 'Weekly brunch concept at five-star resort', photo: 'beach.jpg' },
-  { id: 16, title: 'Live Nation Concerts', category: 'Concerts', desc: 'Major artist concerts and live performances', size: 'tall', photo: 'concerts.jpg' },
+  { id: 1, title: 'Destination Events', category: 'Beach & Brunch', desc: 'Open-air settings shaped around the shoreline and the Dubai skyline.', size: 'large', photo: 'beach-skyline.jpg' },
+  { id: 2, title: 'Corporate Experiences', category: 'Corporate', desc: 'Brand-led environments designed for clear, confident guest experiences.', photo: 'corporate.jpg' },
+  { id: 3, title: 'Nightlife Concepts', category: 'Club Events', desc: 'Sound, lighting and atmosphere working as one connected production.', photo: 'club.jpg' },
+  { id: 4, title: 'Live Entertainment', category: 'Concerts', desc: 'Stage and audience experiences built around the performance.', photo: 'concerts.jpg' },
+  { id: 5, title: 'Private Celebrations', category: 'Weddings', desc: 'Personal event settings with a considered sense of scale and occasion.', size: 'tall', photo: 'weddings.jpg' },
+  { id: 6, title: 'Guest Hospitality', category: 'Catering', desc: 'Food, service and presentation aligned with the wider event experience.', photo: 'catering.jpg' },
+  { id: 7, title: 'Technical Production', category: 'Production', desc: 'Staging, lighting, video and show delivery working behind the scenes.', size: 'wide', photo: 'production.jpg' },
+  { id: 8, title: 'Intimate Weddings', category: 'Weddings', desc: 'Warm, detailed styling for close and personal celebrations.', photo: 'candlelit.jpg' },
+  { id: 9, title: 'Brunch & Social Events', category: 'Beach & Brunch', desc: 'Relaxed daytime formats designed around food, music and connection.', photo: 'beach.jpg' },
 ]
 
 export default function Portfolio() {
   const [activeFilter, setActiveFilter] = useState('All')
+  const reduceMotion = useReducedMotion()
 
   const filtered = activeFilter === 'All'
     ? projects
@@ -46,7 +42,7 @@ export default function Portfolio() {
           <span className="section-label">Our Portfolio</span>
           <h1 className="page-hero-title">Events That<br />Speak Volumes</h1>
           <p className="page-hero-sub">
-            A curated showcase of our finest work across seven worlds of entertainment.
+            A visual overview of our work across seven connected event disciplines.
           </p>
         </motion.div>
       </section>
@@ -60,8 +56,11 @@ export default function Portfolio() {
               {categories.map(cat => (
                 <button
                   key={cat}
+                  type="button"
                   className={`filter-btn ${activeFilter === cat ? 'active' : ''}`}
                   onClick={() => setActiveFilter(cat)}
+                  aria-pressed={activeFilter === cat}
+                  aria-controls="portfolio-grid"
                 >
                   {cat}
                 </button>
@@ -70,17 +69,17 @@ export default function Portfolio() {
           </AnimatedSection>
 
           {/* Grid */}
-          <motion.div className="portfolio-grid" layout>
+          <motion.div id="portfolio-grid" className="portfolio-grid" layout={!reduceMotion} aria-live="polite">
             <AnimatePresence mode="popLayout">
               {filtered.map((project) => (
                 <motion.div
                   key={project.id}
                   className={`portfolio-item ${project.size || ''}`}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
+                  layout={!reduceMotion}
+                  initial={reduceMotion ? false : { opacity: 0, scale: 0.99, y: 8 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
+                  exit={reduceMotion ? undefined : { opacity: 0, scale: 0.995, y: 6 }}
+                  transition={{ duration: reduceMotion ? 0 : 0.36, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <EventImage name={project.photo} alt={project.title} className="portfolio-img" />
                   <div className="portfolio-overlay">
@@ -95,34 +94,16 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="portfolio-stats section-padding">
+      <section className="portfolio-cta section-padding">
         <div className="container">
-          <div className="portfolio-stats-grid">
-            <AnimatedSection delay={0}>
-              <div className="p-stat">
-                <span className="p-stat-num">1500+</span>
-                <span className="p-stat-label">Events Completed</span>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.1}>
-              <div className="p-stat">
-                <span className="p-stat-num">7</span>
-                <span className="p-stat-label">Event Worlds</span>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.2}>
-              <div className="p-stat">
-                <span className="p-stat-num">100%</span>
-                <span className="p-stat-label">Client Satisfaction</span>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.3}>
-              <div className="p-stat">
-                <span className="p-stat-num">24/7</span>
-                <span className="p-stat-label">Dedicated Support</span>
-              </div>
-            </AnimatedSection>
+          <div className="portfolio-cta-inner">
+            <div>
+              <span className="section-label">Your Event</span>
+              <h2 className="section-title">Ready to Add the Next Chapter?</h2>
+            </div>
+            <Link to="/contact" className="btn btn-dark">
+              Start a Conversation <FaArrowRight />
+            </Link>
           </div>
         </div>
       </section>
