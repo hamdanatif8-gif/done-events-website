@@ -21,7 +21,7 @@ const selectedWork = [
   { category: 'Beach & Brunch', title: 'Destination Events', photo: 'beach-skyline.jpg', className: '', alt: 'An outdoor event beside the Dubai skyline' },
   { category: 'Private Events', title: 'Private Celebrations', photo: 'weddings.jpg', className: '', alt: 'A refined private celebration setting' },
   { category: 'Concerts', title: 'Live Entertainment', photo: 'concerts.jpg', className: '', alt: 'Live entertainment with stage lighting and an audience' },
-  { category: 'Production', title: 'Show Production', photo: 'production.jpg', className: 'featured-wide', alt: 'Technical stage production in progress' },
+  { category: 'Production', title: 'Show Production', photo: 'production.jpg', className: '', alt: 'Technical stage production in progress' },
 ]
 
 export default function Home() {
