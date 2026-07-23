@@ -1,26 +1,48 @@
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from 'react'
 
-export default function AnimatedSection({ children, className = '', delay = 0, direction = 'up' }) {
-  const directions = {
-    up: { y: 60, x: 0 },
-    down: { y: -60, x: 0 },
-    left: { y: 0, x: 60 },
-    right: { y: 0, x: -60 },
-  }
+export default function AnimatedSection({ children, className = '', delay = 0 }) {
+  const ref = useRef(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const element = ref.current
+    if (!element) return undefined
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      setVisible(true)
+      return undefined
+    }
+
+    const reveal = () => {
+      setVisible(true)
+      observer.disconnect()
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // Reveal when intersecting, or when the element has already been
+        // scrolled past its top (guards against very fast scroll skipping it).
+        if (entry.isIntersecting || entry.boundingClientRect.top < window.innerHeight) {
+          reveal()
+        }
+      },
+      // No negative bottom margin: a shrunk root creates a dead zone the last
+      // section on the page can never cross, leaving it stuck hidden.
+      { threshold: 0, rootMargin: '0px 0px 0px 0px' },
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
+  }, [])
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, ...directions[direction] }}
-      whileInView={{ opacity: 1, y: 0, x: 0 }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      }}
+    <div
+      ref={ref}
+      className={`reveal-group${visible ? ' is-visible' : ''}${className ? ` ${className}` : ''}`}
+      style={{ '--reveal-delay': `${delay}s` }}
     >
       {children}
-    </motion.div>
+    </div>
   )
 }

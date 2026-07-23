@@ -1,0 +1,116 @@
+.legal-page {
+  background: var(--canvas);
+}
+
+.legal-intro {
+  padding: clamp(140px, 15vw, 200px) var(--gutter) clamp(56px, 6vw, 84px);
+  color: var(--canvas);
+  background: var(--petrol-deep);
+}
+
+.legal-intro h1 {
+  max-width: 16ch;
+  margin: 22px 0 26px;
+  font-size: clamp(2.6rem, 6vw, 5rem);
+  font-weight: 520;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.legal-intro p {
+  max-width: 60ch;
+  color: rgba(246, 242, 234, 0.76);
+  font-size: clamp(1rem, 1.4vw, 1.16rem);
+  line-height: 1.66;
+}
+
+.legal-body {
+  background: var(--canvas);
+}
+
+.legal-body__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.6fr);
+  gap: clamp(40px, 6vw, 92px);
+  align-items: start;
+}
+
+.legal-section {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 18px;
+  padding: clamp(26px, 3vw, 38px) 0;
+  border-top: 1px solid var(--line);
+}
+
+.legal-section:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.legal-section__number {
+  color: var(--accent-dark);
+  font-size: 0.82rem;
+  font-weight: 720;
+}
+
+.legal-section h2 {
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  font-weight: 560;
+  letter-spacing: -0.02em;
+}
+
+.legal-section p {
+  margin-top: 12px;
+  max-width: 62ch;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.72;
+}
+
+.legal-aside {
+  position: sticky;
+  top: 104px;
+  padding: clamp(26px, 2.6vw, 34px);
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+.legal-aside .footer__label {
+  color: var(--accent-dark);
+}
+
+.legal-aside address {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 18px 0 24px;
+  font-style: normal;
+}
+
+.legal-aside address span {
+  color: var(--ink-soft);
+  font-size: 0.94rem;
+}
+
+.legal-aside address a {
+  color: var(--ink);
+  font-size: 1.02rem;
+  border-bottom: 1px solid transparent;
+  transition: border-color 200ms ease;
+  width: fit-content;
+}
+
+.legal-aside address a:hover {
+  border-bottom-color: var(--accent-dark);
+}
+
+@media (max-width: 860px) {
+  .legal-body__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .legal-aside {
+    position: static;
+  }
+}

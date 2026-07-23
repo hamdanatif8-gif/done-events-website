@@ -1,129 +1,237 @@
-import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { FaArrowRight } from 'react-icons/fa'
 import AnimatedSection from '../components/AnimatedSection'
 import EventImage from '../components/EventImage'
 import './Portfolio.css'
 
-const categories = ['All', 'Beach & Brunch', 'Club Events', 'Corporate', 'Concerts', 'Catering', 'Weddings', 'Production']
-
-const projects = [
-  { id: 1, title: 'Sunset Beach Festival 2024', category: 'Beach & Brunch', desc: 'An immersive beachside celebration for 2000+ guests', size: 'large', photo: 'beach.jpg' },
-  { id: 2, title: 'Corporate Excellence Awards', category: 'Corporate', desc: 'Annual black-tie gala for Dubai\'s leading enterprises', photo: 'corporate.jpg' },
-  { id: 3, title: 'Neon Nights Club Launch', category: 'Club Events', desc: 'Grand opening of Dubai\'s newest nightlife destination', photo: 'club.jpg' },
-  { id: 4, title: 'Symphony Under the Stars', category: 'Concerts', desc: 'Outdoor orchestral experience at Dubai Opera Garden', photo: 'concerts.jpg' },
-  { id: 5, title: 'Al Maktoum Wedding', category: 'Weddings', desc: 'A fairytale celebration for 500 guests', size: 'tall', photo: 'weddings.jpg' },
-  { id: 6, title: 'Dubai Food Festival', category: 'Catering', desc: 'Multi-venue culinary showcase across the city', photo: 'catering.jpg' },
-  { id: 7, title: 'Tech Summit 2024', category: 'Corporate', desc: 'International technology conference for 3000 delegates', size: 'wide', photo: 'corporate.jpg' },
-  { id: 8, title: 'Full Moon Party', category: 'Beach & Brunch', desc: 'Monthly beach celebration under the moonlight', photo: 'beach-skyline.jpg' },
-  { id: 9, title: 'Concert Production - Arena', category: 'Production', desc: 'Full technical production for arena concerts', photo: 'production.jpg' },
-  { id: 10, title: 'Royal Garden Wedding', category: 'Weddings', desc: 'Lush garden wedding with floral canopy', photo: 'candlelit.jpg' },
-  { id: 11, title: 'Brand Launch Experience', category: 'Corporate', desc: 'Luxury automobile launch at Burj Al Arab', size: 'large', photo: 'club.jpg' },
-  { id: 12, title: 'Underground Sessions', category: 'Club Events', desc: 'Intimate electronic music experience', photo: 'concerts.jpg' },
-  { id: 13, title: 'Gourmet Gala', category: 'Catering', desc: 'Five-course dining experience with chef collaborations', photo: 'candlelit.jpg' },
-  { id: 14, title: 'Festival of Lights', category: 'Production', desc: 'Spectacular lighting installation at Dubai Creek', photo: 'production.jpg' },
-  { id: 15, title: 'Poolside Brunch Series', category: 'Beach & Brunch', desc: 'Weekly brunch concept at five-star resort', photo: 'beach.jpg' },
-  { id: 16, title: 'Live Nation Concerts', category: 'Concerts', desc: 'Major artist concerts and live performances', size: 'tall', photo: 'concerts.jpg' },
+// Format-led cases. Honest by design: no invented client names, venues or figures.
+// When verified case data is supplied, drop the specifics into `meta` and `context`.
+const cases = [
+  {
+    id: 'corporate-brand',
+    number: '01',
+    category: 'Corporate & brand',
+    title: 'A business message, built into a room.',
+    context:
+      'Conferences, launches and awards where the content, the staging and the guest journey all carry the same idea. The room is directed as carefully as the run of show, and the production plan keeps it moving from first arrival to close.',
+    location: 'Dubai',
+    focus: ['Creative direction', 'Content & guest flow', 'Technical production'],
+    layout: 'duo',
+    images: [
+      {
+        name: 'corporate.jpg',
+        alt: 'Guests at a candlelit corporate gala dinner and panel in Dubai',
+        caption: 'Gala format · audience, content and room aligned',
+        span: 'wide',
+      },
+      {
+        name: 'production.jpg',
+        alt: 'Technicians at the production control desk during a live event',
+        caption: 'Back of house · live show control',
+        span: 'tall',
+      },
+    ],
+  },
+  {
+    id: 'weddings-private',
+    number: '02',
+    category: 'Weddings & private',
+    title: 'Personal by nature. Precise by design.',
+    context:
+      'Cultural and contemporary celebrations where the details guests feel most are the ones handled with the greatest care. Setting, service, entertainment and timing are planned together, so the evening stays warm out front and exact behind it.',
+    location: 'Dubai',
+    focus: ['Venue transformation', 'Catering & hospitality', 'On-site coordination'],
+    layout: 'trio',
+    images: [
+      {
+        name: 'weddings.jpg',
+        alt: 'Guests gathered at an elegant wedding celebration in Dubai',
+        caption: 'Reception · guests and the couple',
+        span: 'lead',
+      },
+      {
+        name: 'candlelit.jpg',
+        alt: 'A candlelit table setting with white flowers and glassware',
+        caption: 'Detail · the table setting',
+        span: 'small',
+      },
+      {
+        name: 'catering.jpg',
+        alt: 'A candlelit waterfront dinner table prepared for evening guests',
+        caption: 'Service · hospitality at the table',
+        span: 'small',
+      },
+    ],
+  },
+  {
+    id: 'destination-outdoor',
+    number: '03',
+    category: 'Destination & outdoor',
+    title: 'The setting becomes the event.',
+    context:
+      'Waterfront and open-air formats read differently in daylight and after dark. The venue, hospitality and operational plan are shaped around the place and the hour — so the event feels natural to where it is, and controlled behind the scenes.',
+    location: 'Dubai',
+    focus: ['Beach & outdoor', 'Hospitality', 'Guest operations'],
+    layout: 'panorama',
+    images: [
+      {
+        name: 'beach-skyline.jpg',
+        alt: 'An outdoor waterfront event setting beside the Dubai skyline',
+        caption: 'Waterfront hospitality · Dubai skyline',
+        span: 'panorama',
+      },
+      {
+        name: 'beach.jpg',
+        alt: 'A daytime beach club dining setting overlooking the Dubai skyline',
+        caption: 'Daytime format · place and service rhythm',
+        span: 'half',
+      },
+    ],
+  },
+  {
+    id: 'live-evening',
+    number: '04',
+    category: 'Live & evening',
+    title: 'Sound, light and a room that holds the night.',
+    context:
+      'Concerts, live shows and late social formats where the performance and the guest experience have to move together. Artist requirements, audience flow and the technical plan are rehearsed as one, so the energy in the room is the only thing that feels spontaneous.',
+    location: 'Dubai',
+    focus: ['Concerts & live shows', 'Entertainment', 'Lounges & social'],
+    layout: 'duo',
+    images: [
+      {
+        name: 'concerts.jpg',
+        alt: 'Guests gathered in a candlelit lounge for a live performance',
+        caption: 'Live format · performance and hospitality',
+        span: 'wide',
+      },
+      {
+        name: 'club.jpg',
+        alt: 'An evening rooftop lounge environment overlooking a city skyline',
+        caption: 'Late format · sound, light and guest flow',
+        span: 'tall',
+      },
+    ],
+  },
 ]
 
-export default function Portfolio() {
-  const [activeFilter, setActiveFilter] = useState('All')
-
-  const filtered = activeFilter === 'All'
-    ? projects
-    : projects.filter(p => p.category === activeFilter)
-
+function CaseFacts({ item }) {
   return (
-    <main className="portfolio-page">
-      {/* Hero */}
-      <section className="page-hero">
-        <div className="page-hero-bg" />
-        <motion.div
-          className="page-hero-content"
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <span className="section-label">Our Portfolio</span>
-          <h1 className="page-hero-title">Events That<br />Speak Volumes</h1>
-          <p className="page-hero-sub">
-            A curated showcase of our finest work across seven worlds of entertainment.
-          </p>
-        </motion.div>
-      </section>
+    <dl className="case-facts">
+      <div>
+        <dt>Format</dt>
+        <dd>{item.category}</dd>
+      </div>
+      <div>
+        <dt>Location</dt>
+        <dd>{item.location}</dd>
+      </div>
+      <div>
+        <dt>Delivered</dt>
+        <dd>
+          <ul>
+            {item.focus.map((focus) => (
+              <li key={focus}>{focus}</li>
+            ))}
+          </ul>
+        </dd>
+      </div>
+    </dl>
+  )
+}
 
-      {/* Portfolio Grid */}
-      <section className="portfolio-section section-padding">
-        <div className="container">
-          {/* Filter Bar */}
-          <AnimatedSection>
-            <div className="filter-bar">
-              {categories.map(cat => (
-                <button
-                  key={cat}
-                  className={`filter-btn ${activeFilter === cat ? 'active' : ''}`}
-                  onClick={() => setActiveFilter(cat)}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </AnimatedSection>
+export default function Portfolio() {
+  return (
+    <main id="main-content" className="portfolio-page">
+      <section className="portfolio-hero" aria-labelledby="portfolio-title">
+        <EventImage
+          name="corporate.jpg"
+          alt="A candlelit corporate gala dinner in Dubai"
+          className="portfolio-hero__media"
+          eager
+          sizes="100vw"
+        />
+        <div className="portfolio-hero__scrim" aria-hidden="true" />
 
-          {/* Grid */}
-          <motion.div className="portfolio-grid" layout>
-            <AnimatePresence mode="popLayout">
-              {filtered.map((project) => (
-                <motion.div
-                  key={project.id}
-                  className={`portfolio-item ${project.size || ''}`}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.4 }}
-                >
-                  <EventImage name={project.photo} alt={project.title} className="portfolio-img" />
-                  <div className="portfolio-overlay">
-                    <span className="portfolio-cat">{project.category}</span>
-                    <h3 className="portfolio-title">{project.title}</h3>
-                    <p className="portfolio-desc">{project.desc}</p>
-                  </div>
-                </motion.div>
+        <div className="container portfolio-hero__content">
+          <span className="eyebrow eyebrow--light">Selected work</span>
+          <h1 id="portfolio-title" tabIndex="-1">
+            The atmosphere is visible.<br />The control is not.
+          </h1>
+          <div className="portfolio-hero__footer">
+            <p>
+              A format-led view across corporate, private, destination and live events — each shaped
+              around its audience, purpose and setting in Dubai.
+            </p>
+            <nav className="portfolio-hero__index" aria-label="Selected work index">
+              {cases.map((item) => (
+                <a key={item.id} href={`#${item.id}`}>
+                  <span>{item.number}</span>
+                  {item.category}
+                </a>
               ))}
-            </AnimatePresence>
-          </motion.div>
+            </nav>
+          </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="portfolio-stats section-padding">
-        <div className="container">
-          <div className="portfolio-stats-grid">
-            <AnimatedSection delay={0}>
-              <div className="p-stat">
-                <span className="p-stat-num">1500+</span>
-                <span className="p-stat-label">Events Completed</span>
+      {cases.map((item, index) => (
+        <section
+          key={item.id}
+          id={item.id}
+          className={`portfolio-case portfolio-case--${item.layout} ${index % 2 === 1 ? 'portfolio-case--alt' : ''}`}
+          aria-labelledby={`${item.id}-title`}
+        >
+          <div className="container">
+            <AnimatedSection className="portfolio-case__head">
+              <div className="portfolio-case__index">
+                <span>{item.number}</span>
+                <span>{item.category}</span>
               </div>
+              <h2 id={`${item.id}-title`}>{item.title}</h2>
+              <p className="portfolio-case__context">{item.context}</p>
             </AnimatedSection>
-            <AnimatedSection delay={0.1}>
-              <div className="p-stat">
-                <span className="p-stat-num">7</span>
-                <span className="p-stat-label">Event Worlds</span>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.2}>
-              <div className="p-stat">
-                <span className="p-stat-num">100%</span>
-                <span className="p-stat-label">Client Satisfaction</span>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.3}>
-              <div className="p-stat">
-                <span className="p-stat-num">24/7</span>
-                <span className="p-stat-label">Dedicated Support</span>
-              </div>
+
+            <div className="portfolio-case__gallery">
+              {item.images.map((image, imageIndex) => (
+                <AnimatedSection
+                  key={image.name}
+                  className={`portfolio-frame portfolio-frame--${image.span}`}
+                  delay={imageIndex * 0.06}
+                >
+                  <EventImage
+                    name={image.name}
+                    alt={image.alt}
+                    className="portfolio-frame__image"
+                    sizes={image.span === 'panorama'
+                      ? '(max-width: 720px) calc(100vw - 44px), 92vw'
+                      : '(max-width: 720px) calc(100vw - 44px), 46vw'}
+                  />
+                  <span className="portfolio-frame__caption">{image.caption}</span>
+                </AnimatedSection>
+              ))}
+            </div>
+
+            <AnimatedSection className="portfolio-case__facts" delay={0.1}>
+              <CaseFacts item={item} />
             </AnimatedSection>
           </div>
+        </section>
+      ))}
+
+      <section className="portfolio-cta" aria-labelledby="portfolio-cta-title">
+        <div className="container portfolio-cta__inner">
+          <AnimatedSection>
+            <span className="eyebrow eyebrow--light">Your event next</span>
+            <h2 id="portfolio-cta-title" className="section-heading section-heading--light">
+              Bring us the one<br />you have in mind.
+            </h2>
+          </AnimatedSection>
+          <AnimatedSection delay={0.08}>
+            <Link to="/contact" className="button button--light">
+              Start an event brief <FaArrowRight aria-hidden="true" />
+            </Link>
+          </AnimatedSection>
         </div>
       </section>
     </main>

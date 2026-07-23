@@ -1,16 +1,46 @@
-# React + Vite
+# DONE Events & Entertainment
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Production React/Vite website for DONE Events & Entertainment in Dubai.
 
-Currently, two official plugins are available:
+## Local development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```bash
+npm install
+npm run dev
+```
 
-## React Compiler
+Create the production build with:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+```bash
+npm run build
+```
 
-## Expanding the Oxlint configuration
+## Site structure
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- `/` — Home
+- `/services` — Services and event categories
+- `/portfolio` — Format-led portfolio stories
+- `/about` — Company approach and delivery model
+- `/contact` — Event brief form
+
+Shared business copy and service data live in `src/content/siteContent.js`. Reusable navigation, media and page-intro components live in `src/components`.
+
+## Protected hero media
+
+The following approved media files must remain byte-for-byte unchanged unless DONE explicitly authorizes a new edit:
+
+- `public/media/hero-authority.mp4`
+- `public/media/hero-authority.webm`
+- `public/media/hero-authority-poster.jpg`
+
+Responsive crop and overlay treatment is controlled in `src/pages/Home.css`.
+
+Approved event photography remains in its original files. The `-640` and `-960` JPG/WebP files are non-destructive responsive derivatives used by `EventImage.jsx`.
+
+## Form delivery
+
+The event brief is structured for Netlify Forms with a matching static form shell in `index.html`. On hosts without a verified form backend, the interface preserves the entered details and offers a prefilled email fallback to `info@doneevents.ae`.
+
+SPA fallbacks are included for Netlify, GitHub Pages and OpenAI Sites hosting.
+
+`SITE_URL` sets the production origin used for absolute social-card URLs. It defaults to the configured OpenAI Sites origin and is supplied automatically by Netlify or the included GitHub Pages workflow. `VITE_BASE_PATH` can set a sub-path deployment base; the GitHub Pages workflow derives it from the repository name.

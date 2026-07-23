@@ -1,22 +1,57 @@
 import { useState } from 'react'
 import { img } from '../imageUrl'
 
-// Drop-in replacement for the .img-placeholder blocks. Keeps the exact
-// container (and its sizing class) so layout is unchanged, and fades the
-// photo in once it decodes for a quiet, premium reveal.
-export default function EventImage({ name, alt, className = '', style, eager = false }) {
+const dimensions = {
+  'beach-skyline.jpg': [1536, 864],
+  'beach.jpg': [1280, 720],
+  'candlelit.jpg': [1400, 787],
+  'catering.jpg': [1280, 720],
+  'club.jpg': [1280, 720],
+  'concerts.jpg': [1280, 720],
+  'corporate.jpg': [1280, 720],
+  'production.jpg': [1280, 720],
+  'weddings.jpg': [1280, 720],
+}
+
+export default function EventImage({
+  name,
+  alt,
+  className = '',
+  style,
+  eager = false,
+  sizes = '(max-width: 640px) calc(100vw - 44px), (max-width: 980px) 90vw, 62vw',
+}) {
   const [loaded, setLoaded] = useState(false)
+  const [width, height] = dimensions[name] || [1280, 720]
+  const stem = name.replace(/\.jpg$/i, '')
+  const webpName = name.replace(/\.jpg$/i, '.webp')
+  const webpSrcSet = [640, 960]
+    .map((candidateWidth) => `${img(`${stem}-${candidateWidth}.webp`)} ${candidateWidth}w`)
+    .concat(`${img(webpName)} ${width}w`)
+    .join(', ')
+  const jpgSrcSet = [640, 960]
+    .map((candidateWidth) => `${img(`${stem}-${candidateWidth}.jpg`)} ${candidateWidth}w`)
+    .concat(`${img(name)} ${width}w`)
+    .join(', ')
+
   return (
     <div className={`img-placeholder ${className}`.trim()} style={style}>
-      <img
-        src={img(name)}
-        alt={alt}
-        className={`event-img${loaded ? ' loaded' : ''}`}
-        loading={eager ? 'eager' : 'lazy'}
-        decoding="async"
-        {...(eager ? { fetchPriority: 'high' } : {})}
-        onLoad={() => setLoaded(true)}
-      />
+      <picture>
+        <source srcSet={webpSrcSet} sizes={sizes} type="image/webp" />
+        <img
+          src={img(name)}
+          srcSet={jpgSrcSet}
+          sizes={sizes}
+          alt={alt}
+          width={width}
+          height={height}
+          className={`event-img${loaded ? ' loaded' : ''}`}
+          loading={eager ? 'eager' : 'lazy'}
+          decoding="async"
+          {...(eager ? { fetchPriority: 'high' } : {})}
+          onLoad={() => setLoaded(true)}
+        />
+      </picture>
     </div>
   )
 }
