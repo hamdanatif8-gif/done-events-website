@@ -92,9 +92,9 @@ export const disciplines = [
     description:
       'We set the format, identity, content and guest journey first, so every later decision has something to answer to. It keeps a large event coherent and a small one considered.',
     scope: ['Concept & format', 'Event identity', 'Guest journey', 'Spatial direction'],
-    image: 'corporate.jpg',
-    imageAlt: 'Guests seated at a candlelit corporate gala dinner in Dubai',
-    imageLabel: 'Purpose, audience and place resolved into one direction.',
+    image: 'candlelit.jpg',
+    imageAlt: 'A candlelit table setting composed with white flowers and glassware',
+    imageLabel: 'Direction carried down to the smallest detail on the table.',
     categoryIds: ['service-corporate-events', 'service-brand-activations', 'service-venue-transformation'],
   },
   {

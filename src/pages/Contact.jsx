@@ -462,6 +462,49 @@ export default function Contact() {
           </AnimatedSection>
         </div>
       </section>
+
+      <section className="contact-location section-shell section-shell--compact" aria-labelledby="location-heading">
+        <div className="container contact-location__grid">
+          <AnimatedSection className="contact-location__info">
+            <span className="eyebrow">Where to find us</span>
+            <h2 id="location-heading" className="section-heading section-heading--compact">
+              Dubai Design District
+            </h2>
+            <p>
+              DONE works from Dubai Design District (d3) — the city's creative quarter, minutes from
+              Downtown and Business Bay.
+            </p>
+            <dl className="contact-location__facts">
+              <div>
+                <dt>District</dt>
+                <dd>Dubai Design District (d3)</dd>
+              </div>
+              <div>
+                <dt>City</dt>
+                <dd>Dubai, United Arab Emirates</dd>
+              </div>
+            </dl>
+            <a
+              className="text-action"
+              href="https://www.google.com/maps/search/?api=1&query=Dubai+Design+District+d3+Dubai"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in Maps <FaArrowRight aria-hidden="true" />
+            </a>
+          </AnimatedSection>
+
+          <AnimatedSection className="contact-location__map" delay={0.08}>
+            <iframe
+              title="Map of Dubai Design District (d3), Dubai"
+              src="https://maps.google.com/maps?q=Dubai%20Design%20District%20d3&z=14&output=embed"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+          </AnimatedSection>
+        </div>
+      </section>
     </main>
   )
 }

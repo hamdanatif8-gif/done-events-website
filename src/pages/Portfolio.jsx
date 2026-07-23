@@ -144,15 +144,6 @@ export default function Portfolio() {
   return (
     <main id="main-content" className="portfolio-page">
       <section className="portfolio-hero" aria-labelledby="portfolio-title">
-        <EventImage
-          name="corporate.jpg"
-          alt="A candlelit corporate gala dinner in Dubai"
-          className="portfolio-hero__media"
-          eager
-          sizes="100vw"
-        />
-        <div className="portfolio-hero__scrim" aria-hidden="true" />
-
         <div className="container portfolio-hero__content">
           <span className="eyebrow eyebrow--light">Selected work</span>
           <h1 id="portfolio-title" tabIndex="-1">

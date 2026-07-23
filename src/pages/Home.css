@@ -227,7 +227,6 @@
 }
 
 .selected-work__intro,
-.home-process__intro,
 .home-sectors__intro {
   display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.7fr);
@@ -499,7 +498,7 @@
   text-wrap: balance;
 }
 
-/* ============================================================= WHY DONE */
+/* ============================================================= WHY DONE + PROCESS */
 .home-advantage {
   background: var(--canvas);
 }
@@ -507,45 +506,66 @@
 .home-advantage__layout {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(40px, 6vw, 90px);
+  gap: clamp(36px, 5vw, 72px);
   align-items: start;
 }
 
-.home-advantage__media {
-  position: relative;
-  align-self: stretch;
-}
-
-.home-advantage__image {
-  aspect-ratio: 4 / 5;
-  width: 100%;
-  height: 100%;
-}
-
-.home-advantage__caption {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 12px 18px;
-  color: var(--canvas);
-  background: rgba(23, 50, 53, 0.86);
-  font-size: 0.66rem;
-  font-weight: 640;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.home-advantage__content .lede {
+.home-advantage__intro .lede {
   margin-top: 22px;
 }
 
 .advantage-list {
-  margin-top: clamp(32px, 4vw, 46px);
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
+}
+
+.home-advantage__process {
+  grid-column: 1 / -1;
+  margin-top: clamp(18px, 2.6vw, 34px);
+  padding-top: clamp(26px, 3vw, 38px);
+  border-top: 1px solid var(--line-strong);
+}
+
+.home-advantage__process-label {
+  margin-bottom: 22px;
+  color: var(--accent-dark);
+  font-size: 0.62rem;
+  font-weight: 720;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.process-rail {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(20px, 2.6vw, 40px);
+}
+
+.process-rail li {
+  display: flex;
+  gap: 14px;
+}
+
+.process-rail span {
+  color: var(--accent-dark);
+  font-size: 0.78rem;
+  font-weight: 720;
+}
+
+.process-rail h3 {
+  font-size: 1.06rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.process-rail p {
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 0.88rem;
+  line-height: 1.56;
 }
 
 .advantage-item {
@@ -575,53 +595,17 @@
   line-height: 1.56;
 }
 
-/* ============================================================= PROCESS */
-.home-process {
-  background: var(--surface-cool);
-}
-
-.home-process__intro .section-heading {
-  margin-top: 20px;
-}
-
-.process-track {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--line-strong);
-  border: 1px solid var(--line-strong);
-}
-
-.process-step {
-  padding: clamp(26px, 2.6vw, 38px) clamp(20px, 2vw, 28px);
-  background: var(--surface-cool);
-}
-
-.process-step__number {
-  display: block;
-  color: var(--accent-dark);
-  font-size: 1.4rem;
-  font-weight: 560;
-  letter-spacing: -0.03em;
-}
-
-.process-step h3 {
-  margin-top: 20px;
-  font-size: 1.2rem;
-  font-weight: 580;
-  letter-spacing: -0.02em;
-}
-
-.process-step p {
-  margin-top: 12px;
-  color: var(--muted);
-  font-size: 0.94rem;
-  line-height: 1.6;
-}
-
 /* ============================================================= SECTORS */
 .home-sectors {
-  background: var(--canvas);
+  background: var(--surface);
+}
+
+.home-sectors .sector-card {
+  background: var(--surface);
+}
+
+.home-sectors .sector-card:hover {
+  background: var(--surface-warm);
 }
 
 .home-sectors__intro .section-heading {
@@ -686,7 +670,6 @@
   .home-positioning__grid,
   .home-advantage__layout,
   .selected-work__intro,
-  .home-process__intro,
   .home-sectors__intro,
   .home-services__intro {
     grid-template-columns: 1fr;
@@ -724,8 +707,7 @@
 
 @media (max-width: 560px) {
   .advantage-list,
-  .sector-grid,
-  .process-track {
+  .sector-grid {
     grid-template-columns: 1fr;
   }
 
@@ -737,5 +719,18 @@
     padding: 0 12px;
     width: 40px;
     justify-content: center;
+  }
+}
+
+@media (max-width: 1080px) {
+  .process-rail {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+}
+
+@media (max-width: 560px) {
+  .process-rail {
+    grid-template-columns: 1fr;
   }
 }

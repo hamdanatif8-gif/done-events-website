@@ -198,61 +198,43 @@ export default function Home() {
 
       <section className="home-advantage section-shell">
         <div className="container home-advantage__layout">
-          <AnimatedSection className="home-advantage__media">
-            <EventImage
-              name="production.jpg"
-              alt="Technicians at a live event production control desk in Dubai"
-              className="home-advantage__image"
-              sizes="(max-width: 980px) calc(100vw - 44px), 46vw"
-            />
-            <span className="home-advantage__caption">Behind the room · live show control</span>
-          </AnimatedSection>
-
-          <div className="home-advantage__content">
+          <div className="home-advantage__intro">
             <AnimatedSection>
               <span className="eyebrow">Why DONE</span>
               <h2 className="section-heading">Creative ambition,<br />operational calm.</h2>
               <p className="lede">
                 The part guests see and the plan behind it are built together. Fewer gaps, clearer
-                calls, and a team that stays in the room through the live event.
+                calls, and a team that stays in the room until the last guest leaves.
               </p>
             </AnimatedSection>
-            <div className="advantage-list">
-              {operatingStandards.map((standard, index) => (
-                <AnimatedSection key={standard.title} className="advantage-item" delay={index * 0.04}>
-                  <span className="advantage-item__number">{standard.number}</span>
-                  <div>
-                    <h3>{standard.title}</h3>
-                    <p>{standard.description}</p>
-                  </div>
-                </AnimatedSection>
-              ))}
-            </div>
           </div>
-        </div>
-      </section>
 
-      <section className="home-process section-shell">
-        <div className="container">
-          <AnimatedSection className="home-process__intro">
-            <div>
-              <span className="eyebrow">How we work</span>
-              <h2 className="section-heading">From first brief<br />to final cue.</h2>
-            </div>
-            <p className="lede">
-              Four stages, each one resolving what the next depends on — so the plan is ready long
-              before the doors open.
-            </p>
-          </AnimatedSection>
-          <ol className="process-track">
-            {processSteps.map((step, index) => (
-              <AnimatedSection key={step.title} className="process-step" delay={index * 0.06}>
-                <span className="process-step__number">{step.number}</span>
-                <h3>{step.title}</h3>
-                <p>{step.description}</p>
+          <div className="advantage-list">
+            {operatingStandards.map((standard, index) => (
+              <AnimatedSection key={standard.title} className="advantage-item" delay={index * 0.04}>
+                <span className="advantage-item__number">{standard.number}</span>
+                <div>
+                  <h3>{standard.title}</h3>
+                  <p>{standard.description}</p>
+                </div>
               </AnimatedSection>
             ))}
-          </ol>
+          </div>
+
+          <AnimatedSection className="home-advantage__process" delay={0.08}>
+            <p className="home-advantage__process-label">How a project runs</p>
+            <ol className="process-rail">
+              {processSteps.map((step) => (
+                <li key={step.title}>
+                  <span>{step.number}</span>
+                  <div>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </AnimatedSection>
         </div>
       </section>
 
