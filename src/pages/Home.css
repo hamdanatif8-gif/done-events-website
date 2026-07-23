@@ -6,7 +6,7 @@
   align-items: flex-end;
   overflow: hidden;
   isolation: isolate;
-  padding: 150px var(--gutter) clamp(74px, 9vh, 112px);
+  padding: 150px var(--gutter) clamp(96px, 12vh, 140px);
   color: var(--canvas);
   background: var(--ink);
 }

@@ -1,15 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { FiPause, FiPlay, FiVolume2, FiVolumeX } from 'react-icons/fi'
 
-// The approved hero cut is a silent cinematic loop (Dubai skyline, Burj Khalifa,
-// Sheikh Zayed Road, stage build, control desk). If a licensed, brand-appropriate
-// audio bed is supplied later, drop it into the encode and the sound control below
-// activates automatically once the <video> reports an audio track.
+// Cinematic hero loop with a licensed audio bed (NCS release supplied by the
+// client). Autoplay starts muted per browser policy; the sound control is a
+// deliberate user gesture, which also satisfies autoplay-with-audio rules.
 export default function HeroVideo() {
   const videoRef = useRef(null)
   const base = import.meta.env.BASE_URL
 
-  const [hasAudio, setHasAudio] = useState(false)
   const [muted, setMuted] = useState(true)
   const [playing, setPlaying] = useState(true)
   const [reduced, setReduced] = useState(false)
@@ -19,17 +17,6 @@ export default function HeroVideo() {
     if (!video) return undefined
 
     const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-    const detectAudio = () => {
-      const trackCount = video.audioTracks?.length
-      const mozHasAudio = video.mozHasAudio
-      const webkitAudio = video.webkitAudioDecodedByteCount
-      const detected =
-        (typeof trackCount === 'number' && trackCount > 0) ||
-        mozHasAudio === true ||
-        (typeof webkitAudio === 'number' && webkitAudio > 0)
-      if (detected) setHasAudio(true)
-    }
 
     const syncPlayback = () => {
       const prefersReduced = motionPreference.matches
@@ -45,16 +32,9 @@ export default function HeroVideo() {
       }
     }
 
-    video.addEventListener('loadedmetadata', detectAudio)
-    video.addEventListener('playing', detectAudio)
     syncPlayback()
     motionPreference.addEventListener('change', syncPlayback)
-
-    return () => {
-      video.removeEventListener('loadedmetadata', detectAudio)
-      video.removeEventListener('playing', detectAudio)
-      motionPreference.removeEventListener('change', syncPlayback)
-    }
+    return () => motionPreference.removeEventListener('change', syncPlayback)
   }, [])
 
   const toggleSound = () => {
@@ -103,18 +83,16 @@ export default function HeroVideo() {
       <div className="hero-video-scrim" aria-hidden="true" />
 
       <div className="hero-media__controls">
-        {hasAudio && (
-          <button
-            type="button"
-            className="hero-media__control"
-            onClick={toggleSound}
-            aria-pressed={!muted}
-            aria-label={muted ? 'Unmute hero film' : 'Mute hero film'}
-          >
-            {muted ? <FiVolumeX aria-hidden="true" /> : <FiVolume2 aria-hidden="true" />}
-            <span>{muted ? 'Sound off' : 'Sound on'}</span>
-          </button>
-        )}
+        <button
+          type="button"
+          className="hero-media__control"
+          onClick={toggleSound}
+          aria-pressed={!muted}
+          aria-label={muted ? 'Unmute hero film' : 'Mute hero film'}
+        >
+          {muted ? <FiVolumeX aria-hidden="true" /> : <FiVolume2 aria-hidden="true" />}
+          <span>{muted ? 'Sound off' : 'Sound on'}</span>
+        </button>
         {!reduced && (
           <button
             type="button"
