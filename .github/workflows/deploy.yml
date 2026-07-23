@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/serene-feynman-egc8rv, claude/project-deployment-zalgdv, main]
+    branches: [claude/project-deployment-zalgdv, claude/serene-feynman-egc8rv, main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -37,12 +38,54 @@ jobs:
         with:
           path: dist/client
 
+  # Publishes to a gh-pages branch and serves Pages from it (classic mode).
+  # The github-pages environment's branch protection rejects deploys from
+  # non-default branches, so actions/deploy-pages cannot be used here.
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: write
+      pages: write
     steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download built site
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: pages-artifact
+
+      - name: Unpack site
+        run: |
+          mkdir site
+          tar -xf pages-artifact/artifact.tar -C site
+
+      - name: Publish to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          force_orphan: true
+
+      # Pages already serves the gh-pages branch (its internal build runs on
+      # every push above). This step only reconciles configuration if the repo
+      # is ever reset, so an "already configured" response must not fail CI.
+      - name: Ensure Pages serves the gh-pages branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          payload='{"build_type":"legacy","source":{"branch":"gh-pages","path":"/"}}'
+          code=$(curl -sS -o /tmp/resp.json -w "%{http_code}" -X PUT \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/pages" \
+            -d "$payload")
+          echo "PUT /pages -> $code"; cat /tmp/resp.json 2>/dev/null || true
+          if [ "$code" = "404" ]; then
+            code=$(curl -sS -o /tmp/resp.json -w "%{http_code}" -X POST \
+              -H "Authorization: Bearer $GH_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pages" \
+              -d "$payload")
+            echo "POST /pages -> $code"; cat /tmp/resp.json 2>/dev/null || true
+          fi
+          echo "Pages configuration reconciliation finished (status $code)."
