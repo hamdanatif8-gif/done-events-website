@@ -1,308 +1,346 @@
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { FaArrowRight, FaStar } from 'react-icons/fa'
+import { FaArrowRight } from 'react-icons/fa'
 import AnimatedSection from '../components/AnimatedSection'
 import EventImage from '../components/EventImage'
-import Showreel from '../components/Showreel'
+import HeroVideo from '../components/HeroVideo'
+import {
+  capabilityProof,
+  contactDetails,
+  deliverables,
+  eventFormats,
+  operatingStandards,
+  portfolioProjects,
+  processSteps,
+} from '../content/siteContent'
 import './Home.css'
 
-const eventWorlds = [
-  { title: 'Beach & Brunch', desc: 'Sun-kissed celebrations and oceanside soirées', icon: '🏖️', color: '#e8d5b7' },
-  { title: 'Club Events', desc: 'Electric nightlife experiences that ignite the senses', icon: '🎶', color: '#d4c5e8' },
-  { title: 'Corporate', desc: 'Sophisticated business events that leave lasting impressions', icon: '🏢', color: '#c5d8e8' },
-  { title: 'Concerts', desc: 'World-class live entertainment and musical productions', icon: '🎤', color: '#e8c5c5' },
-  { title: 'Catering & Hospitality', desc: 'Exquisite culinary journeys for every palate', icon: '🍽️', color: '#c5e8d4' },
-  { title: 'Private & Weddings', desc: 'Dream celebrations crafted with love and elegance', icon: '💐', color: '#f0e0d0' },
-  { title: 'Production', desc: 'State-of-the-art technical production and staging', icon: '🎬', color: '#d8d4e8' },
-]
-
-const stats = [
-  { number: '15+', label: 'Years of Excellence' },
-  { number: '1500+', label: 'Events Delivered' },
-  { number: '200+', label: 'Corporate Clients' },
-  { number: '50+', label: 'Award Nominations' },
-]
-
-const testimonials = [
-  { name: 'Sarah Al Maktoum', role: 'CEO, Luxe Holdings', text: 'Done Events transformed our annual gala into an unforgettable masterpiece. Their attention to detail is unmatched in Dubai.' },
-  { name: 'James Mitchell', role: 'Director, Global Corp', text: 'From concept to execution, the team delivered beyond our wildest expectations. A truly world-class event management company.' },
-  { name: 'Fatima Al Rashid', role: 'Private Client', text: 'Our wedding was a dream come true. Every single moment was perfectly orchestrated. Thank you, Done Events!' },
+const featuredWork = [
+  portfolioProjects[0],
+  portfolioProjects[1],
+  portfolioProjects[5],
 ]
 
 export default function Home() {
-  const heroRef = useRef(null)
-  const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0])
+  const [lead, second, third] = featuredWork
 
   return (
-    <main className="home">
-      {/* Hero Section - Colorful with Moon Animation */}
-      <section className="hero" ref={heroRef}>
-        <div className="hero-bg">
-          <div className="hero-gradient-1" />
-          <div className="hero-gradient-2" />
-          <div className="hero-gradient-3" />
-          <div className="hero-stars">
-            {[...Array(30)].map((_, i) => (
-              <div key={i} className="star" style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 60}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                animationDuration: `${2 + Math.random() * 3}s`,
-              }} />
-            ))}
+    <main id="main-content" className="home">
+      {/* ── 01 · Cinematic opening ─────────────────────────────────────── */}
+      <section className="hero">
+        <HeroVideo />
+
+        <div className="container hero__content">
+          <span className="hero__kicker">Dubai · United Arab Emirates</span>
+          <h1 tabIndex="-1">
+            Ambitious events.
+            <br />
+            <span>Precisely delivered.</span>
+          </h1>
+          <p>
+            Creative direction, production and hospitality through one accountable team — from the
+            first brief to the final cue.
+          </p>
+          <div className="hero__actions">
+            <Link to="/contact" className="button button--light">
+              Start an event brief <FaArrowRight aria-hidden="true" />
+            </Link>
+            <Link to="/portfolio" className="text-action text-action--light">
+              See the work
+            </Link>
           </div>
-          <div className="moon">
-            <div className="moon-glow" />
-            <div className="moon-body" />
-            <div className="moon-crater moon-crater-1" />
-            <div className="moon-crater moon-crater-2" />
-            <div className="moon-crater moon-crater-3" />
-          </div>
         </div>
-        <div className="hero-horizon" />
 
-        <motion.div className="hero-content" style={{ y: heroY, opacity: heroOpacity }}>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="hero-label"
-          >
-            Dubai's Premier Event Company
-          </motion.div>
-
-          <motion.h1
-            className="hero-title"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-          >
-            Day to Night.<br />
-            <span className="hero-highlight">Done Right.</span>
-          </motion.h1>
-
-          <motion.p
-            className="hero-subtitle"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-          >
-            Crafting extraordinary events across seven worlds of entertainment.
-            From intimate gatherings to grand spectacles — we make every moment unforgettable.
-          </motion.p>
-
-          <motion.div
-            className="hero-buttons"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-          >
-            <Link to="/portfolio" className="btn btn-primary hero-btn">
-              Explore Our Work <FaArrowRight />
-            </Link>
-            <Link to="/contact" className="btn btn-outline hero-btn-outline">
-              Start Your Event
-            </Link>
-          </motion.div>
-
-          <motion.div
-            className="hero-scroll-indicator"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-          >
-            <div className="scroll-line" />
-          </motion.div>
-        </motion.div>
-      </section>
-
-      {/* Stats Bar */}
-      <section className="stats-bar">
-        <div className="container stats-grid">
-          {stats.map((stat, i) => (
-            <AnimatedSection key={stat.label} delay={i * 0.1}>
-              <div className="stat-item">
-                <span className="stat-number">{stat.number}</span>
-                <span className="stat-label">{stat.label}</span>
-              </div>
-            </AnimatedSection>
-          ))}
-        </div>
-      </section>
-
-      {/* About Intro */}
-      <section className="about-intro section-padding">
-        <div className="container about-intro-grid">
-          <AnimatedSection direction="left" className="about-intro-image">
-            <EventImage
-              name="candlelit.jpg"
-              alt="Warm, candlelit table styling at a premium Dubai event"
-              className="img-tall"
-            />
-          </AnimatedSection>
-          <AnimatedSection direction="right" className="about-intro-content">
-            <span className="section-label">Who We Are</span>
-            <h2 className="section-title">Where Vision<br />Meets Execution</h2>
-            <p className="about-intro-text">
-              For over 15 years, Done Events & Entertainment has been the trusted partner behind
-              Dubai's most talked-about events. We don't just plan events — we architect experiences
-              that resonate, inspire, and linger in memory long after the last guest departs.
-            </p>
-            <p className="about-intro-text">
-              From beachside brunches that redefine leisure to corporate galas that command attention,
-              our seven event worlds encompass every facet of entertainment. Each event is a canvas,
-              and we're the artists who bring your vision to vivid life.
-            </p>
-            <Link to="/about" className="btn btn-dark">
-              Our Story <FaArrowRight />
-            </Link>
-          </AnimatedSection>
-        </div>
-      </section>
-
-      {/* Seven Event Worlds */}
-      <section className="event-worlds section-padding">
-        <div className="container">
-          <AnimatedSection>
-            <div className="section-header">
-              <span className="section-label">What We Do</span>
-              <h2 className="section-title">Seven Worlds of<br />Entertainment</h2>
-              <p className="section-subtitle">
-                Each world represents a realm of expertise, honed over thousands of events
-                and perfected through unwavering dedication to excellence.
-              </p>
-            </div>
-          </AnimatedSection>
-
-          <div className="worlds-grid">
-            {eventWorlds.map((world, i) => (
-              <AnimatedSection key={world.title} delay={i * 0.08}>
-                <Link to="/services" className="world-card" style={{ '--card-accent': world.color }}>
-                  <div className="world-icon">{world.icon}</div>
-                  <h3 className="world-title">{world.title}</h3>
-                  <p className="world-desc">{world.desc}</p>
-                  <span className="world-arrow"><FaArrowRight /></span>
-                </Link>
-              </AnimatedSection>
+        <div className="hero__ticker" aria-hidden="true">
+          <div className="hero__ticker-track">
+            {[0, 1].map((pass) => (
+              <ul key={pass}>
+                {eventFormats.map((format) => (
+                  <li key={`${pass}-${format.id}`}>{format.title}</li>
+                ))}
+              </ul>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Cinematic Showreel */}
-      <Showreel />
-
-      {/* Featured Work / Image Grid */}
-      <section className="featured-work section-padding">
-        <div className="container">
-          <AnimatedSection>
-            <div className="section-header">
-              <span className="section-label">Featured Projects</span>
-              <h2 className="section-title">Creating Moments<br />That Matter</h2>
-            </div>
+      {/* ── 02 · Positioning ───────────────────────────────────────────── */}
+      <section className="home-position">
+        <div className="container home-position__grid">
+          <AnimatedSection className="home-position__statement">
+            <span className="eyebrow">DONE Events &amp; Entertainment</span>
+            <h2>
+              A Dubai events company built to hold the whole experience together — the idea, the
+              build and the day itself.
+            </h2>
           </AnimatedSection>
 
-          <div className="featured-grid">
-            <AnimatedSection delay={0} className="featured-item featured-large">
-              <EventImage name="corporate.jpg" alt="Grand gala night — corporate event at Dubai Opera" className="img-featured" />
-              <div className="featured-overlay">
-                <span className="featured-cat">Corporate</span>
-                <h3>Grand Gala Night</h3>
+          <AnimatedSection className="home-position__detail" delay={0.06}>
+            <p>
+              Most events lose their shape between teams. DONE keeps creative, technical and
+              hospitality decisions in the same plan, so what was promised in the brief is what
+              guests actually walk into.
+            </p>
+            <dl>
+              <div>
+                <dt>Disciplines</dt>
+                <dd>Creative direction · Production · Hospitality</dd>
               </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.1} className="featured-item">
-              <EventImage name="beach.jpg" alt="Sunset beach festival by the Dubai coastline" className="img-featured" />
-              <div className="featured-overlay">
-                <span className="featured-cat">Beach & Brunch</span>
-                <h3>Sunset Beach Festival</h3>
+              <div>
+                <dt>Formats</dt>
+                <dd>Corporate · Live · Private · Outdoor</dd>
               </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.15} className="featured-item">
-              <EventImage name="weddings.jpg" alt="Royal wedding celebration in a Dubai ballroom" className="img-featured" />
-              <div className="featured-overlay">
-                <span className="featured-cat">Weddings</span>
-                <h3>Royal Wedding</h3>
+              <div>
+                <dt>Working base</dt>
+                <dd>Dubai, serving all seven emirates</dd>
               </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.2} className="featured-item">
-              <EventImage name="concerts.jpg" alt="Live entertainment and stage production" className="img-featured" />
-              <div className="featured-overlay">
-                <span className="featured-cat">Concerts</span>
-                <h3>EDM Festival</h3>
-              </div>
-            </AnimatedSection>
-            <AnimatedSection delay={0.25} className="featured-item featured-wide">
-              <EventImage name="beach-skyline.jpg" alt="Luxury brand launch on The Palm with Dubai skyline" className="img-featured" />
-              <div className="featured-overlay">
-                <span className="featured-cat">Corporate</span>
-                <h3>Luxury Brand Launch</h3>
-              </div>
-            </AnimatedSection>
-          </div>
-
-          <AnimatedSection className="featured-cta">
-            <Link to="/portfolio" className="btn btn-outline">
-              View All Projects <FaArrowRight />
+            </dl>
+            <Link to="/about" className="text-action">
+              How the team works <FaArrowRight aria-hidden="true" />
             </Link>
           </AnimatedSection>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="testimonials section-padding">
+      {/* ── 03 · Selected work ─────────────────────────────────────────── */}
+      <section className="home-work">
         <div className="container">
-          <AnimatedSection>
-            <div className="section-header">
-              <span className="section-label">Client Love</span>
-              <h2 className="section-title light">Words That<br />Inspire Us</h2>
+          <AnimatedSection className="home-work__head">
+            <div>
+              <span className="eyebrow">Selected work</span>
+              <h2 className="section-heading">The work, in the room.</h2>
             </div>
+            <Link to="/portfolio" className="text-action">
+              Full portfolio <FaArrowRight aria-hidden="true" />
+            </Link>
           </AnimatedSection>
 
-          <div className="testimonials-grid">
-            {testimonials.map((t, i) => (
-              <AnimatedSection key={t.name} delay={i * 0.1}>
-                <div className="testimonial-card">
-                  <div className="testimonial-stars">
-                    {[...Array(5)].map((_, j) => <FaStar key={j} />)}
-                  </div>
-                  <p className="testimonial-text">"{t.text}"</p>
-                  <div className="testimonial-author">
-                    <div className="testimonial-avatar">{t.name[0]}</div>
-                    <div>
-                      <strong>{t.name}</strong>
-                      <span>{t.role}</span>
-                    </div>
-                  </div>
+          <div className="home-work__grid">
+            <AnimatedSection className="work-tile work-tile--lead">
+              <Link to={`/portfolio#${lead.id}`}>
+                <EventImage
+                  name={lead.image}
+                  alt={lead.imageAlt}
+                  focus={lead.imageFocus}
+                  className="work-tile__media"
+                  sizes="(max-width: 900px) 100vw, 62vw"
+                />
+                <span className="work-tile__veil" aria-hidden="true" />
+                <div className="work-tile__body">
+                  <span className="work-tile__meta">
+                    {lead.number} · {lead.format} · {lead.location}
+                  </span>
+                  <h3>{lead.title}</h3>
+                  <p>{lead.note}</p>
+                  <ul>
+                    {lead.scope.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
                 </div>
-              </AnimatedSection>
-            ))}
+              </Link>
+            </AnimatedSection>
+
+            <div className="home-work__stack">
+              {[second, third].map((project, index) => (
+                <AnimatedSection key={project.id} className="work-tile work-tile--stack" delay={0.06 + index * 0.06}>
+                  <Link to={`/portfolio#${project.id}`}>
+                    <EventImage
+                      name={project.image}
+                      alt={project.imageAlt}
+                      focus={project.imageFocus}
+                      className="work-tile__media"
+                      sizes="(max-width: 900px) 100vw, 34vw"
+                    />
+                    <span className="work-tile__veil" aria-hidden="true" />
+                    <div className="work-tile__body">
+                      <span className="work-tile__meta">
+                        {project.number} · {project.format}
+                      </span>
+                      <h3>{project.title}</h3>
+                    </div>
+                  </Link>
+                </AnimatedSection>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="home-cta section-padding">
+      {/* ── 04 · Event categories ──────────────────────────────────────── */}
+      <section className="home-categories">
         <div className="container">
-          <AnimatedSection>
-            <div className="cta-content">
-              <span className="section-label">Ready to Begin?</span>
-              <h2 className="cta-title">Let's Create Something<br />Extraordinary Together</h2>
-              <p className="cta-text">
-                Whether it's an intimate dinner for 20 or a festival for 20,000,
-                we're ready to bring your vision to life.
-              </p>
-              <div className="cta-buttons">
-                <Link to="/contact" className="btn btn-primary">
-                  Start Planning <FaArrowRight />
+          <AnimatedSection className="home-categories__head">
+            <span className="eyebrow eyebrow--light">What we are hired for</span>
+            <p>
+              Six starting points. Every one of them can be delivered as a single service or as a
+              complete turnkey event.
+            </p>
+          </AnimatedSection>
+
+          <div className="category-rail">
+            {eventFormats.map((format, index) => (
+              <AnimatedSection key={format.id} className="category-card" delay={index * 0.04}>
+                <Link to={format.href}>
+                  <span className="category-card__index">{String(index + 1).padStart(2, '0')}</span>
+                  <h3>{format.title}</h3>
+                  <p>{format.description}</p>
+                  <span className="category-card__cue" aria-hidden="true">
+                    <FaArrowRight />
+                  </span>
                 </Link>
-                <a href="https://wa.me/971585554446" className="btn btn-outline" target="_blank" rel="noopener noreferrer">
-                  WhatsApp Us
-                </a>
-              </div>
+              </AnimatedSection>
+            ))}
+          </div>
+
+          <AnimatedSection className="home-categories__foot" delay={0.08}>
+            <Link to="/services" className="button button--light">
+              All twelve services <FaArrowRight aria-hidden="true" />
+            </Link>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* ── 05 · What DONE delivers ────────────────────────────────────── */}
+      <section className="home-deliver">
+        <div className="container home-deliver__grid">
+          <AnimatedSection className="home-deliver__intro">
+            <span className="eyebrow">What you get</span>
+            <h2>Not a mood board. A delivery plan.</h2>
+            <p>
+              Whatever the format, the same six things are on the table before anyone builds
+              anything.
+            </p>
+          </AnimatedSection>
+
+          <ol className="deliver-list">
+            {deliverables.map((item, index) => (
+              <AnimatedSection as="li" key={item.number} className="deliver-item" delay={index * 0.03}>
+                <span>{item.number}</span>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </AnimatedSection>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── 06 · Cinematic band ────────────────────────────────────────── */}
+      <section className="home-band" aria-label="Live event delivery">
+        <EventImage
+          name="concerts.jpg"
+          alt="A large audience facing a brightly lit stage during a live performance"
+          focus="50% 45%"
+          className="home-band__media"
+          sizes="100vw"
+        />
+        <span className="home-band__veil" aria-hidden="true" />
+        <AnimatedSection className="container home-band__copy">
+          <p>Ten thousand decisions happen before the first guest notices one.</p>
+          <span>Live delivery · Dubai</span>
+        </AnimatedSection>
+      </section>
+
+      {/* ── 07 · Why DONE ──────────────────────────────────────────────── */}
+      <section className="home-why">
+        <div className="container home-why__grid">
+          <AnimatedSection className="home-why__media">
+            <EventImage
+              name="weddings.jpg"
+              alt="An outdoor ceremony setting at dusk with floral styling and seated guests"
+              focus="50% 50%"
+              className="home-why__image"
+              sizes="(max-width: 900px) 100vw, 42vw"
+            />
+            <span>Warmth in the room. Discipline behind it.</span>
+          </AnimatedSection>
+
+          <div className="home-why__content">
+            <AnimatedSection>
+              <span className="eyebrow">Why DONE</span>
+              <h2 className="section-heading">
+                Creative ambition,
+                <br />
+                operational calm.
+              </h2>
+            </AnimatedSection>
+
+            <div className="why-list">
+              {operatingStandards.map((standard, index) => (
+                <AnimatedSection key={standard.number} className="why-item" delay={index * 0.04}>
+                  <span>{standard.number}</span>
+                  <div>
+                    <h3>{standard.title}</h3>
+                    <p>{standard.description}</p>
+                  </div>
+                </AnimatedSection>
+              ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 08 · Process ───────────────────────────────────────────────── */}
+      <section className="home-process">
+        <div className="container">
+          <AnimatedSection className="home-process__head">
+            <span className="eyebrow eyebrow--light">From brief to live</span>
+            <h2 className="section-heading section-heading--light">Four stages. One plan.</h2>
+          </AnimatedSection>
+
+          <ol className="process-track">
+            {processSteps.map((step, index) => (
+              <AnimatedSection as="li" key={step.number} className="process-step" delay={index * 0.05}>
+                <span className="process-step__number">{step.number}</span>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </AnimatedSection>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* ── 09 · Capability proof ──────────────────────────────────────── */}
+      <section className="home-proof">
+        <AnimatedSection className="container home-proof__grid">
+          {capabilityProof.map((item) => (
+            <div key={item.id}>
+              <dt>{item.label}</dt>
+              <dd>{item.value}</dd>
+            </div>
+          ))}
+        </AnimatedSection>
+      </section>
+
+      {/* ── 10 · Brief invitation ──────────────────────────────────────── */}
+      <section className="home-invite">
+        <div className="container home-invite__grid">
+          <AnimatedSection className="home-invite__copy">
+            <span className="eyebrow">Next step</span>
+            <h2 className="section-heading">Tell us what the event has to do.</h2>
+            <p className="lede">
+              Share the date, the format and what is still undecided. You will get a considered
+              response with a clear view of scope, feasibility and next steps.
+            </p>
+            <Link to="/contact" className="button button--dark">
+              Start an event brief <FaArrowRight aria-hidden="true" />
+            </Link>
+          </AnimatedSection>
+
+          <AnimatedSection className="home-invite__channels" delay={0.06}>
+            <p className="home-invite__label">Or reach the team directly</p>
+            <a href={contactDetails.phoneHref}>
+              <small>Call</small>
+              {contactDetails.phone}
+            </a>
+            <a href={contactDetails.emailHref}>
+              <small>Email</small>
+              {contactDetails.email}
+            </a>
+            <a href={contactDetails.whatsapp} target="_blank" rel="noopener noreferrer">
+              <small>Message</small>
+              WhatsApp
+            </a>
+            <span className="home-invite__location">{contactDetails.location}</span>
           </AnimatedSection>
         </div>
       </section>

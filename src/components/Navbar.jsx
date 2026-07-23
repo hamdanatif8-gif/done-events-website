@@ -1,7 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import { HiMenuAlt3, HiX } from 'react-icons/hi'
 import './Navbar.css'
 
 const navLinks = [
@@ -9,108 +7,133 @@ const navLinks = [
   { path: '/services', label: 'Services' },
   { path: '/portfolio', label: 'Portfolio' },
   { path: '/about', label: 'About' },
-  { path: '/contact', label: 'Contact' },
 ]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const location = useLocation()
+  const currentPath = location.pathname === '/' ? '/' : location.pathname.replace(/\/+$/, '')
+  const toggleRef = useRef(null)
+  const menuRef = useRef(null)
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll)
+    const handleScroll = () => setScrolled(window.scrollY > 24)
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
   useEffect(() => {
     setMobileOpen(false)
-  }, [location])
+  }, [location.pathname])
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    if (!mobileOpen) {
+      document.body.style.overflow = ''
+      return undefined
+    }
+
+    document.body.style.overflow = 'hidden'
+    const menu = menuRef.current
+    const menuFocusable = [...(menu?.querySelectorAll('a[href], button:not([disabled])') || [])]
+    const focusable = [toggleRef.current, ...menuFocusable].filter(Boolean)
+    menuFocusable[0]?.focus()
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setMobileOpen(false)
+        toggleRef.current?.focus()
+        return
+      }
+
+      if (event.key !== 'Tab' || focusable.length === 0) return
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault()
+        last.focus()
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault()
+        first.focus()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.body.style.overflow = ''
+      window.removeEventListener('keydown', handleKeyDown)
+    }
   }, [mobileOpen])
 
-  return (
-    <>
-      <motion.nav
-        className={`navbar ${scrolled ? 'scrolled' : ''}`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-      >
-        <div className="navbar-inner">
-          <Link to="/" className="navbar-logo">
-            <span className="logo-icon">D</span>
-            <div className="logo-text">
-              <span className="logo-name">DONE</span>
-              <span className="logo-sub">Events & Entertainment</span>
-            </div>
-          </Link>
+  const isActive = (path) => currentPath === path
 
-          <div className="navbar-links">
-            {navLinks.map(link => (
+  return (
+    <header className={`navbar${scrolled ? ' is-scrolled' : ''}${mobileOpen ? ' is-open' : ''}`}>
+      <div className="navbar__inner">
+        <Link to="/" className="brand-lockup" aria-label="DONE Events & Entertainment home">
+          <span className="brand-lockup__name">DONE</span>
+          <span className="brand-lockup__sub">Events &amp; Entertainment</span>
+        </Link>
+
+        <nav className="navbar__links" aria-label="Primary navigation">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={isActive(link.path) ? 'is-active' : ''}
+              aria-current={isActive(link.path) ? 'page' : undefined}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <Link
+          to="/contact"
+          className={`navbar__cta${isActive('/contact') ? ' is-active' : ''}`}
+          aria-current={isActive('/contact') ? 'page' : undefined}
+        >
+          Contact
+        </Link>
+
+        <button
+          ref={toggleRef}
+          type="button"
+          className="navbar__toggle"
+          onClick={() => setMobileOpen((open) => !open)}
+          aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
+          aria-expanded={mobileOpen}
+          aria-controls="mobile-navigation"
+        >
+          <span>{mobileOpen ? 'Close' : 'Menu'}</span>
+          <i aria-hidden="true" />
+        </button>
+      </div>
+
+      {mobileOpen && (
+        <nav ref={menuRef} id="mobile-navigation" className="mobile-navigation" aria-label="Mobile navigation">
+          <div className="mobile-navigation__inner">
+            {[...navLinks, { path: '/contact', label: 'Contact' }].map((link, index) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+                className={isActive(link.path) ? 'is-active' : ''}
+                style={{ '--item-index': index }}
+                aria-current={isActive(link.path) ? 'page' : undefined}
               >
-                {link.label}
+                <span>0{index + 1}</span>{link.label}
               </Link>
             ))}
-          </div>
-
-          <Link to="/contact" className="navbar-cta">Get in Touch</Link>
-
-          <button
-            className="mobile-toggle"
-            onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
-          >
-            {mobileOpen ? <HiX /> : <HiMenuAlt3 />}
-          </button>
-        </div>
-      </motion.nav>
-
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            className="mobile-menu"
-            initial={{ opacity: 0, x: '100%' }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: '100%' }}
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-          >
-            <div className="mobile-menu-inner">
-              {navLinks.map((link, i) => (
-                <motion.div
-                  key={link.path}
-                  initial={{ opacity: 0, x: 30 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.08 }}
-                >
-                  <Link
-                    to={link.path}
-                    className={`mobile-link ${location.pathname === link.path ? 'active' : ''}`}
-                  >
-                    {link.label}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <Link to="/contact" className="btn btn-primary mobile-cta">
-                  Get in Touch
-                </Link>
-              </motion.div>
+            <div className="mobile-navigation__contact">
+              <span>Dubai, United Arab Emirates</span>
+              <a href="tel:+971585554446">+971 58 555 4446</a>
+              <a href="mailto:info@doneevents.ae">info@doneevents.ae</a>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+          </div>
+        </nav>
+      )}
+    </header>
   )
 }
