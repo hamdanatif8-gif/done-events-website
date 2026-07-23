@@ -25,6 +25,13 @@ jobs:
           node-version: 20
           cache: npm
 
+      # Enables GitHub Pages for the repo if it is not already turned on,
+      # so the deploy step below has a Pages site to publish to.
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
       - run: npm ci
       - run: npm run build
         env:
