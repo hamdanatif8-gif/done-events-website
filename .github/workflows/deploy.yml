@@ -1,20 +1,23 @@
 name: Deploy to GitHub Pages
 
+# This repository's Pages site is served from the `gh-pages` branch, and the
+# `github-pages` environment rejects deployments from other refs — so the build
+# is published by pushing dist/ to `gh-pages` rather than via deploy-pages.
+
 on:
   push:
     branches: [claude/code-execution-protocol-tdlm2f, main]
+  workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -27,19 +30,24 @@ jobs:
       - run: npm ci
       - run: npm run build
 
-      - name: Copy index.html to 404.html for SPA routing
-        run: cp dist/index.html dist/404.html
+      - name: Add Pages extras
+        run: |
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Publish dist/ to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin gh-pages --depth=1
+          git worktree add ../pages gh-pages
+          find ../pages -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -r dist/. ../pages/
+          cd ../pages
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no changes to publish"
+            exit 0
+          fi
+          git commit -m "deploy: ${GITHUB_SHA}"
+          git push origin gh-pages
