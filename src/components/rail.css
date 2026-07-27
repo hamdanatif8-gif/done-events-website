@@ -1,0 +1,170 @@
+/* --------------------------------------------------------------------------
+   Fixed chapter rail — electric field, condensed lettering, serrated edge.
+   -------------------------------------------------------------------------- */
+
+.rail {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 60;
+  width: var(--rail);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(6px, 1.2vh, 14px) 0 clamp(8px, 1.4vh, 16px);
+  background: var(--blue);
+  color: var(--cream);
+}
+
+.rail__list {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0px, 0.55vh, 7px);
+  padding: 0 0 0 4px;
+}
+
+.rail__link {
+  position: relative;
+  display: block;
+  min-height: 36px;
+  padding: 0.14em 0.08em 0.2em;
+  isolation: isolate;
+}
+
+.rail__label {
+  display: block;
+  font-family: var(--rail-face);
+  font-weight: 400;
+  font-size: calc(var(--rail) * 0.35);
+  line-height: 0.94;
+  letter-spacing: 0.004em;
+  text-transform: uppercase;
+  text-align: left;
+  white-space: nowrap;
+  transform-origin: left center;
+  transition: color 220ms var(--ease-io);
+}
+
+/* Active chapter: the label knocks out of a cream block. */
+.rail__link::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--cream);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 340ms var(--ease-out);
+}
+.rail__link[data-active='true']::before {
+  transform: scaleX(1);
+}
+.rail__link[data-active='true'] .rail__label {
+  color: var(--blue);
+}
+
+@media (hover: hover) {
+  .rail__link:hover .rail__label {
+    color: var(--yellow);
+  }
+  .rail__link[data-active='true']:hover .rail__label {
+    color: var(--blue);
+  }
+}
+
+.rail__mark {
+  padding: 0 clamp(4px, 0.6vw, 8px);
+  font-size: clamp(0.4rem, 0.52vw, 0.56rem);
+  line-height: 1.25;
+  letter-spacing: 0.055em;
+  color: var(--cream);
+}
+
+/* Serrated right edge — a torn stamp perforation, cream teeth on the field. */
+.rail__edge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 9px;
+  height: 100%;
+  background: var(--cream);
+  -webkit-mask-image: var(--tooth);
+  mask-image: var(--tooth);
+  -webkit-mask-size: 9px 15px;
+  mask-size: 9px 15px;
+  -webkit-mask-repeat: repeat-y;
+  mask-repeat: repeat-y;
+  pointer-events: none;
+}
+
+:root {
+  --tooth: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='15' viewBox='0 0 9 15'><path d='M0 0 L9 7.5 L0 15 Z' fill='%23000'/></svg>");
+  --tooth-down: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='9' viewBox='0 0 15 9'><path d='M0 0 L7.5 9 L15 0 Z' fill='%23000'/></svg>");
+}
+
+/* --------------------------------------------------------------------------
+   Phone / small tablet — the rail lies down. Same lettering, same colour,
+   same serration, now a scrollable chapter strip.
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  :root {
+    --railbar: 56px;
+  }
+
+  .rail {
+    inset: 0 0 auto 0;
+    width: 100%;
+    height: var(--railbar);
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+  }
+
+  .rail__list {
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    padding: 0 10px 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+  .rail__list::-webkit-scrollbar {
+    display: none;
+  }
+  .rail__list > li {
+    scroll-snap-align: center;
+  }
+
+  .rail__link {
+    padding: 6px 7px 4px;
+  }
+  .rail__label {
+    font-size: 26px;
+  }
+  .rail__link::before {
+    transform-origin: center;
+  }
+
+  .rail__mark {
+    display: none;
+  }
+
+  .rail__edge {
+    top: auto;
+    bottom: -8px;
+    right: 0;
+    width: 100%;
+    height: 9px;
+    -webkit-mask-image: var(--tooth-down);
+    mask-image: var(--tooth-down);
+    -webkit-mask-size: 15px 9px;
+    mask-size: 15px 9px;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+  }
+}

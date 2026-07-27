@@ -1,0 +1,154 @@
+/* --------------------------------------------------------------------------
+   OVERTURE — the opening band. The name is set in the ground colour so the
+   letterforms only exist where the media exists.
+   -------------------------------------------------------------------------- */
+
+.overture {
+  position: relative;
+  overflow: hidden;
+}
+
+.overture__band {
+  container-type: inline-size;
+  position: relative;
+  height: min(86svh, 960px);
+  min-height: 420px;
+  overflow: hidden;
+  background: var(--ink);
+  isolation: isolate;
+}
+
+.overture__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.overture__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 46%;
+}
+
+.overture__block {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: -10%;
+  width: 44%;
+  height: 120%;
+  background: var(--orange);
+}
+
+.overture__word {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: clamp(3px, 0.5vw, 10px);
+  color: var(--blue);
+  will-change: transform;
+}
+.overture__line {
+  display: block;
+  white-space: nowrap;
+  line-height: 0.735;
+  letter-spacing: -0.022em;
+}
+/* span 1 is the screen-reader title; 2 and 3 are the two poster lines. */
+.overture__word span:nth-of-type(2) {
+  font-size: 19.6cqi;
+}
+.overture__word span:nth-of-type(3) {
+  font-size: 16.3cqi;
+}
+
+.overture__cue {
+  position: absolute;
+  z-index: 3;
+  right: var(--edge);
+  bottom: clamp(0.7rem, 1.6vw, 1.4rem);
+  color: var(--cream);
+  mix-blend-mode: difference;
+}
+
+.overture .metarow {
+  overflow: hidden;
+}
+.overture .metarow span {
+  display: block;
+}
+
+.overture__lede {
+  margin: clamp(0.4rem, 1.4vw, 1.6rem) 0 clamp(1.4rem, 3vw, 3rem);
+  padding-left: clamp(3px, 0.5vw, 10px);
+  color: var(--cream);
+  font-family: var(--display);
+  font-weight: 900;
+  font-stretch: 62%;
+  font-variation-settings: 'wdth' 62, 'wght' 900;
+  font-size: clamp(2.6rem, 10.4vw, 13rem);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+/* Capability ticker — breadth stated plainly, moving on its own. */
+.ticker {
+  overflow: hidden;
+  border-top: 2px solid var(--cream);
+  border-bottom: 2px solid var(--cream);
+  padding: 0.55rem 0;
+}
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: ticker 46s linear infinite;
+}
+.ticker__group {
+  display: flex;
+  gap: 2.6rem;
+  padding-right: 2.6rem;
+  color: var(--cream);
+  white-space: nowrap;
+}
+.ticker__group span::after {
+  content: ' ／';
+  opacity: 0.55;
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track {
+    animation: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .overture__band {
+    height: min(72svh, 640px);
+    min-height: 340px;
+  }
+  .overture__block {
+    width: 52%;
+  }
+  .overture__line {
+    line-height: 0.86;
+  }
+  .overture__word span:nth-of-type(2) {
+    font-size: 19.4cqi;
+  }
+  .overture__word span:nth-of-type(3) {
+    font-size: 16.2cqi;
+  }
+  .overture__lede {
+    font-size: 15vw;
+  }
+}

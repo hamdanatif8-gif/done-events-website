@@ -1,0 +1,67 @@
+/* --------------------------------------------------------------------------
+   Design tokens. The graphic system: one electric ground, flat colour fields,
+   ink type, cream paper. Nothing here is decorative — every field is used as a
+   full-bleed chapter surface.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Ground + fields */
+  --blue: #2318f0;
+  --cream: #f7f0e3;
+  --ink: #232323;
+  --grey: #adadad;
+  --yellow: #ffe500;
+  --pink: #ff63c9;
+  --green: #6dee00;
+  --orange: #ff7a28;
+  --cyan: #83d9f2;
+  --lilac: #bfa9ff;
+
+  /* The page ground — swapped per chapter by the scroll engine */
+  --stage: var(--blue);
+  --stage-ink: var(--cream);
+
+  /* Structure */
+  --rail: clamp(78px, 6.9vw, 124px);
+  --edge: clamp(16px, 2.2vw, 40px);
+  --gutter: clamp(20px, 3.4vw, 64px);
+
+  /* Type */
+  --display: 'Archivo Variable', 'Archivo', 'Arial Narrow', sans-serif;
+  --rail-face: 'Anton', 'Archivo Variable', 'Arial Narrow', sans-serif;
+  --text: 'Archivo Variable', 'Archivo', system-ui, sans-serif;
+  --mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-io: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Condensed heavy display: Archivo variable, width axis pulled in hard. */
+.u-display {
+  font-family: var(--display);
+  font-weight: 900;
+  font-stretch: 62%;
+  font-variation-settings: 'wdth' 62, 'wght' 900;
+  text-transform: uppercase;
+  line-height: 0.78;
+  letter-spacing: -0.012em;
+  font-synthesis: none;
+}
+
+.u-mono {
+  font-family: var(--mono);
+  font-weight: 500;
+  font-size: clamp(0.56rem, 0.72vw, 0.78rem);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.u-body {
+  font-family: var(--text);
+  font-weight: 400;
+  font-size: clamp(1.02rem, 1.22vw, 1.32rem);
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+}

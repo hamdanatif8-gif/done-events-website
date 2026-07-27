@@ -1,0 +1,508 @@
+/* --------------------------------------------------------------------------
+   CHAPTERS — threshold (flat colour field) then paper (cream stock).
+   -------------------------------------------------------------------------- */
+
+.chapterwrap {
+  position: relative;
+}
+
+/* --- Cover ------------------------------------------------------------- */
+.cover {
+  position: relative;
+  padding: clamp(26px, 4.6vh, 74px) 0 clamp(18px, 3.4vh, 54px);
+}
+
+.cover__panel {
+  container-type: inline-size;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(1.2rem, 3vw, 3rem);
+  min-height: min(74svh, 780px);
+  padding: clamp(12px, 1.8vw, 26px) var(--edge) clamp(12px, 1.8vw, 24px);
+  background: var(--field);
+  color: var(--field-ink);
+  overflow: hidden;
+  will-change: clip-path;
+}
+
+.cover__eyebrow {
+  color: inherit;
+  opacity: 0.85;
+}
+
+.cover__type {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+}
+
+.cover__brand,
+.cover__row {
+  font-family: var(--display);
+  font-weight: 900;
+  font-stretch: 62%;
+  font-variation-settings: 'wdth' 62, 'wght' 900;
+  text-transform: uppercase;
+  font-size: 17.6cqi;
+  line-height: 0.84;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.cover__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4em;
+}
+
+.cover__glyph {
+  position: absolute;
+  z-index: 2;
+  left: 46%;
+  top: 50%;
+  width: 24cqi;
+  height: 24cqi;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.cover__foot {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gutter);
+  color: inherit;
+  will-change: transform;
+}
+.cover__foot span:last-child {
+  text-align: right;
+}
+
+/* --- Paper ------------------------------------------------------------- */
+.chapter {
+  position: relative;
+  display: flow-root; /* contains child margins so no ground shows between sections */
+  padding: clamp(34px, 6vh, 96px) var(--edge) clamp(34px, 6vh, 92px);
+  background: var(--cream);
+  color: var(--ink);
+}
+.chapter + .chapter {
+  padding-top: 0;
+}
+.chapter--media {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.chapter__head {
+  container-type: inline-size;
+  margin-bottom: clamp(1.2rem, 3vw, 2.6rem);
+}
+
+.chapter__word {
+  display: block;
+  font-size: min(calc(100cqi / (var(--len, 9) * 0.53)), 30vh);
+  line-height: 0.8;
+  letter-spacing: -0.022em;
+  color: var(--ink);
+  will-change: clip-path;
+}
+
+.chapter__meta {
+  padding: 0.9rem 0 0;
+  color: var(--ink);
+  border-top: 2px solid var(--ink);
+}
+
+.chapter__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(1.6rem, 4vw, 5rem);
+  align-items: start;
+}
+
+.chapter__statement {
+  position: relative;
+}
+.chapter__lines {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(2.4rem, 5.4vw, 6.4rem);
+  line-height: 0.84;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.chapter__glyph {
+  position: absolute;
+  right: -2%;
+  top: 8%;
+  width: clamp(90px, 13vw, 200px);
+  height: clamp(90px, 13vw, 200px);
+  opacity: 0.95;
+  will-change: transform;
+  pointer-events: none;
+}
+
+.chapter__column {
+  max-width: 56ch;
+}
+.chapter__lede {
+  font-family: var(--text);
+  font-weight: 500;
+  font-size: clamp(1.18rem, 1.9vw, 1.72rem);
+  line-height: 1.32;
+  letter-spacing: -0.012em;
+  margin-bottom: 1.1em;
+}
+.chapter__para + .chapter__para {
+  margin-top: 1em;
+}
+
+.chapter__massive {
+  color: var(--ink);
+}
+
+/* --- Row sets ----------------------------------------------------------- */
+.massive {
+  overflow: hidden;
+  padding: clamp(1rem, 3vw, 2.4rem) 0;
+}
+.massive__inner {
+  font-size: clamp(3rem, 12vw, 15rem);
+  line-height: 0.82;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.standards,
+.scopegrid,
+.process {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: clamp(1.2rem, 2.6vw, 2.6rem);
+  margin-top: clamp(2rem, 5vw, 4rem);
+  border-top: 2px solid var(--ink);
+  padding-top: clamp(1.2rem, 2.4vw, 2rem);
+}
+.standards__item,
+.scopegrid__item,
+.process__item {
+  will-change: transform;
+}
+.standards__item h4,
+.scopegrid__item h4,
+.process__item h4 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-stretch: 78%;
+  font-variation-settings: 'wdth' 78, 'wght' 900;
+  text-transform: uppercase;
+  font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+  line-height: 0.92;
+  margin: 0.35em 0 0.4em;
+}
+.standards__item > span,
+.scopegrid__item > span,
+.process__item > span {
+  display: block;
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+}
+.standards__item p,
+.scopegrid__item p,
+.process__item p {
+  max-width: 34ch;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: clamp(1.2rem, 2.6vw, 2.8rem);
+  border-top: 2px solid var(--ink);
+  padding-top: clamp(1.2rem, 2.4vw, 2rem);
+}
+.services__title {
+  font-size: clamp(1.6rem, 3vw, 2.8rem);
+  line-height: 0.9;
+  margin-bottom: 0.45em;
+  font-stretch: 78%;
+  font-variation-settings: 'wdth' 78, 'wght' 900;
+}
+.services__item p {
+  max-width: 40ch;
+}
+
+.scopeline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.9rem;
+  margin-top: clamp(1.4rem, 3vw, 2.4rem);
+}
+.scopeline li {
+  border: 2px solid var(--ink);
+  padding: 0.5em 0.85em 0.42em;
+}
+
+.sectors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: clamp(1rem, 2.4vw, 2.2rem);
+}
+.sectors__item {
+  border-top: 2px solid var(--ink);
+  padding-top: 0.8rem;
+}
+.sectors__item h4 {
+  font-size: clamp(1.3rem, 2.2vw, 2rem);
+  line-height: 0.94;
+  font-stretch: 78%;
+  font-variation-settings: 'wdth' 78, 'wght' 900;
+  margin-bottom: 0.4em;
+}
+
+/* --- Image planes ------------------------------------------------------- */
+.imageplane {
+  position: relative;
+}
+.imageplane .plate {
+  aspect-ratio: 16 / 9;
+  will-change: clip-path;
+}
+.imageplane figcaption {
+  padding: 0.7rem var(--edge) 0;
+  color: var(--ink);
+}
+.imageplane.wide .plate {
+  aspect-ratio: 21 / 9;
+}
+
+.duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(10px, 1.6vw, 26px);
+  padding: 0 var(--edge);
+}
+.duo__item--1 {
+  margin-top: clamp(1.6rem, 6vw, 6rem);
+}
+
+/* --------------------------------------------------------------------------
+   POSTER PLANE — a printed poster dragged bodily across the canvas.
+   -------------------------------------------------------------------------- */
+.poster {
+  position: relative;
+  background: var(--cream);
+}
+
+.poster__stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--cream);
+  display: grid;
+  place-items: center;
+}
+
+.poster__word {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(3.4rem, 16vw, 20rem);
+  line-height: 0.8;
+  color: var(--ink);
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.poster__meta {
+  position: absolute;
+  z-index: 2;
+  left: var(--edge);
+  bottom: clamp(1.2rem, 4vw, 3rem);
+  color: var(--ink);
+  will-change: transform;
+}
+
+.poster__ghost {
+  position: absolute;
+  z-index: 0;
+  right: 4vw;
+  top: 12%;
+  width: min(38vw, 480px);
+  aspect-ratio: 3 / 4;
+  will-change: transform;
+}
+
+.poster__plane {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  margin: auto;
+  width: min(82vw, 1180px);
+  aspect-ratio: 16 / 10;
+  will-change: transform;
+  box-shadow: 0 50px 110px -60px rgba(0, 0, 0, 0.7);
+}
+.poster__plane .plate {
+  width: 100%;
+  height: 100%;
+}
+.poster__plane figcaption {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  padding: 0.7em 1em 0.6em;
+  background: var(--blue);
+  color: var(--cream);
+}
+
+/* --------------------------------------------------------------------------
+   REEL — the live plane.
+   -------------------------------------------------------------------------- */
+.reel {
+  position: relative;
+  background: var(--ink);
+}
+.reel__stage {
+  position: relative;
+  height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--ink);
+}
+.reel__frame {
+  width: min(94vw, 1500px);
+  aspect-ratio: 16 / 9;
+  will-change: clip-path, transform;
+}
+.reel__frame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.reel__caption {
+  position: absolute;
+  left: var(--edge);
+  bottom: clamp(1rem, 3vw, 2.4rem);
+  color: var(--cream);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------------------
+   Small screens — the compositions recompose rather than shrink.
+   -------------------------------------------------------------------------- */
+@media (max-width: 860px) {
+  .cover__panel {
+    min-height: min(62svh, 560px);
+  }
+  .cover__brand,
+  .cover__row {
+    font-size: 18.4cqi;
+  }
+  .cover__glyph {
+    width: 25cqi;
+    height: 25cqi;
+    left: 62%;
+    top: 46%;
+  }
+  .cover__foot {
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .cover__foot span:last-child {
+    text-align: left;
+  }
+
+  .chapter__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .chapter__glyph {
+    right: 2%;
+    top: auto;
+    bottom: -8%;
+    width: 34vw;
+    height: 34vw;
+  }
+  .chapter__word {
+    font-size: min(calc(100cqi / (var(--len, 9) * 0.5)), 22vh);
+  }
+
+  .duo {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .duo__item--1 {
+    margin-top: 0;
+  }
+
+  .poster__plane {
+    width: 92vw;
+  }
+  .poster__ghost {
+    width: 54vw;
+    right: 2vw;
+  }
+  .poster__word {
+    font-size: 22vw;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   PINNED SCENE — the media is held and the typography is what travels.
+   -------------------------------------------------------------------------- */
+.pinned {
+  position: relative;
+  background: var(--ink);
+}
+.pinned__stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--ink);
+}
+.pinned__media {
+  position: absolute;
+  inset: 0;
+}
+.pinned__media img {
+  will-change: transform;
+}
+.pinned__bar {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 16%;
+  background: var(--blue);
+  transform-origin: bottom center;
+  will-change: transform;
+}
+.pinned__word {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  font-size: clamp(3.6rem, 15vw, 19rem);
+  line-height: 0.82;
+  color: var(--cream);
+  white-space: nowrap;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+.pinned__caption {
+  position: absolute;
+  z-index: 3;
+  left: var(--edge);
+  bottom: clamp(1rem, 3vw, 2.2rem);
+  color: var(--cream);
+}

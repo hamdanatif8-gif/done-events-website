@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/serene-feynman-egc8rv, main]
+    branches: [claude/code-execution-protocol-tdlm2f, main]
 
 permissions:
   contents: read
