@@ -27,10 +27,38 @@
       href="/done-events-website/media/img/corporate-1200.webp"
       fetchpriority="high"
     />
-    <script type="module" crossorigin src="/done-events-website/assets/index-BmQSVrl_.js"></script>
-    <link rel="stylesheet" crossorigin href="/done-events-website/assets/index-hkTCf1WE.css">
+    <script type="module" crossorigin src="/done-events-website/assets/index-CN4axA1M.js"></script>
+    <link rel="stylesheet" crossorigin href="/done-events-website/assets/index-ZTBGX_cw.css">
   </head>
   <body>
     <div id="root"></div>
+
+    <!--
+      Netlify detects forms by parsing the deployed HTML at build time, and a
+      React form only exists after hydration. This static copy is what the
+      build crawler registers: the field names must match what the app posts.
+      It is hidden from the page and from assistive technology; the real,
+      designed form is in MailChapter.jsx and posts to this form name.
+    -->
+    <form name="event-brief" data-netlify="true" netlify-honeypot="company-website" hidden>
+      <input type="hidden" name="form-name" value="event-brief" />
+      <input type="text" name="company-website" />
+      <input type="text" name="name" />
+      <input type="text" name="company" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="eventType" />
+      <input type="date" name="date" />
+      <input type="text" name="emirate" />
+      <input type="text" name="venue" />
+      <input type="text" name="guests" />
+      <input type="text" name="setting" />
+      <input type="text" name="services" />
+      <input type="text" name="entertainment" />
+      <input type="text" name="catering" />
+      <input type="text" name="budget" />
+      <textarea name="message"></textarea>
+    </form>
+
   </body>
 </html>
