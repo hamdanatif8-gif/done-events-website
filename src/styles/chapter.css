@@ -61,16 +61,60 @@
   gap: 0.4em;
 }
 
-.cover__glyph {
+/* The number can sit on the CHAPTER line or drop below it as its own object. */
+.cover__type--below .cover__row {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+.cover__type--below .cover__num {
+  font-size: 1.55em;
+  line-height: 0.74;
+  margin-left: -0.03em;
+}
+
+/* --- The chapter's character ------------------------------------------- */
+.cover__char {
   position: absolute;
-  z-index: 2;
-  left: 46%;
-  top: 50%;
-  width: 24cqi;
-  height: 24cqi;
-  transform: translate(-50%, -50%);
+  left: var(--char-x, 62%);
+  bottom: 0;
+  width: calc(21cqi * var(--char-scale, 1));
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
   will-change: transform;
   pointer-events: none;
+}
+.cover__char svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* stand — on the baseline, in front of the number */
+.cover--stand .cover__char {
+  z-index: 3;
+  bottom: -4%;
+}
+/* behind — only the top half clears the type */
+.cover--behind .cover__char {
+  z-index: 0;
+  bottom: 12%;
+}
+/* peek — rising out of the field's bottom edge, cropped by it */
+.cover--peek .cover__char {
+  z-index: 3;
+  bottom: -22%;
+}
+/* split — holding the centre, larger than the words around it */
+.cover--split .cover__char {
+  z-index: 3;
+  bottom: -6%;
+}
+.cover--split .cover__word {
+  margin-right: auto;
+}
+.cover--split .cover__num {
+  margin-left: auto;
 }
 
 .cover__foot {
@@ -79,6 +123,10 @@
   gap: var(--gutter);
   color: inherit;
   will-change: transform;
+}
+.cover__foot span:nth-child(2) {
+  text-align: center;
+  opacity: 0.72;
 }
 .cover__foot span:last-child {
   text-align: right;
@@ -139,15 +187,33 @@
   color: var(--ink);
 }
 
-.chapter__glyph {
-  position: absolute;
-  right: -2%;
-  top: 8%;
-  width: clamp(90px, 13vw, 200px);
-  height: clamp(90px, 13vw, 200px);
-  opacity: 0.95;
-  will-change: transform;
+/* The character stands inside the statement block, behind the words, so the
+   type reads as scenery it is walking through. */
+.charscene {
   pointer-events: none;
+  will-change: transform;
+}
+.charscene svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.charscene--back {
+  z-index: 0;
+}
+.charscene--front {
+  z-index: 3;
+}
+
+.chapter__char {
+  position: absolute;
+  right: -4%;
+  top: 4%;
+  width: clamp(96px, 14vw, 210px);
+}
+.chapter__lines {
+  position: relative;
+  z-index: 1;
 }
 
 .chapter__column {
@@ -331,37 +397,24 @@
   will-change: transform;
 }
 
-.poster__ghost {
-  position: absolute;
-  z-index: 0;
-  right: 4vw;
-  top: 12%;
-  width: min(38vw, 480px);
-  aspect-ratio: 3 / 4;
-  will-change: transform;
-}
-
+/* Three planes at three depths. The front one is the printed sheet the
+   visitor reads; the two behind it are the same sheet in other stocks,
+   travelling faster and further so the traverse has real depth. */
 .poster__plane {
   position: absolute;
   z-index: 3;
   inset: 0;
   margin: auto;
-  width: min(82vw, 1180px);
-  aspect-ratio: 16 / 10;
+  width: min(38vw, 460px);
   will-change: transform;
-  box-shadow: 0 50px 110px -60px rgba(0, 0, 0, 0.7);
 }
-.poster__plane .plate {
-  width: 100%;
-  height: 100%;
+.poster__trail--1 {
+  z-index: 2;
+  opacity: 0.94;
 }
-.poster__plane figcaption {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  padding: 0.7em 1em 0.6em;
-  background: var(--blue);
-  color: var(--cream);
+.poster__trail--2 {
+  z-index: 1;
+  opacity: 0.8;
 }
 
 /* --------------------------------------------------------------------------
@@ -408,16 +461,26 @@
   .cover__row {
     font-size: 18.4cqi;
   }
-  .cover__glyph {
-    width: 25cqi;
-    height: 25cqi;
-    left: 62%;
-    top: 46%;
+  /* On a phone the number always drops to its own line — "CHAPTER 07" set
+     on one line at cover scale cannot fit a 390px measure without clipping. */
+  .cover__row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .cover__num {
+    font-size: 1.5em;
+    line-height: 0.74;
+    margin-left: -0.03em;
+  }
+  .cover__char {
+    width: calc(30cqi * var(--char-scale, 1));
   }
   .cover__foot {
     flex-direction: column;
     gap: 0.2rem;
   }
+  .cover__foot span:nth-child(2),
   .cover__foot span:last-child {
     text-align: left;
   }
@@ -425,12 +488,11 @@
   .chapter__grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .chapter__glyph {
-    right: 2%;
+  .chapter__char {
+    right: 0;
     top: auto;
-    bottom: -8%;
-    width: 34vw;
-    height: 34vw;
+    bottom: -6%;
+    width: 30vw;
   }
   .chapter__word {
     font-size: min(calc(100cqi / (var(--len, 9) * 0.5)), 22vh);
@@ -444,11 +506,7 @@
   }
 
   .poster__plane {
-    width: 92vw;
-  }
-  .poster__ghost {
-    width: 54vw;
-    right: 2vw;
+    width: min(66vw, 320px);
   }
   .poster__word {
     font-size: 22vw;

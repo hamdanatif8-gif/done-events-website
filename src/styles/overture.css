@@ -1,100 +1,115 @@
 /* --------------------------------------------------------------------------
-   OVERTURE — the opening band. The name is set in the ground colour so the
-   letterforms only exist where the media exists.
+   OVERTURE — the opening. The company name is the aperture: a picture, two
+   colour fields and one character move behind two words used as a clip path.
    -------------------------------------------------------------------------- */
 
 .overture {
   position: relative;
   overflow: hidden;
+  padding-top: clamp(0.6rem, 1.6vw, 1.6rem);
 }
 
-.overture__band {
-  container-type: inline-size;
+.overture__type {
   position: relative;
-  height: min(86svh, 960px);
-  min-height: 420px;
-  overflow: hidden;
-  background: var(--ink);
-  isolation: isolate;
-}
-
-.overture__photo {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-.overture__photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 46%;
-}
-
-.overture__block {
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  top: -10%;
-  width: 44%;
-  height: 120%;
-  background: var(--orange);
-}
-
-.overture__word {
-  position: absolute;
   z-index: 2;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-left: clamp(3px, 0.5vw, 10px);
-  color: var(--blue);
+  padding: 0 var(--edge);
+  will-change: transform;
+  transform-origin: 50% 30%;
+}
+
+.overture__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* The two words. `textLength` on the element pulls each one to the full
+   measure, so the fit holds whatever the font does. */
+.ov-word {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 240px;
+  font-stretch: 75%;
+  font-variation-settings: 'wdth' 75, 'wght' 900;
+  text-transform: uppercase;
+}
+
+.ov-photo {
   will-change: transform;
 }
-.overture__line {
-  display: block;
+
+/* Spark, standing at the visitor's scale in front of the word. */
+/* Standing at the visitor's scale, overlapping the last letter of EVENTS so
+   the crew is established inside the composition rather than beside it. */
+.overture__spark {
+  position: absolute;
+  z-index: 3;
+  right: clamp(1.5%, 5vw, 7%);
+  top: clamp(24vh, 34vh, 42vh);
+  width: clamp(88px, 12vw, 190px);
+  will-change: transform;
+  pointer-events: none;
+}
+
+.overture__what {
+  position: relative;
+  z-index: 3;
+  max-width: 34ch;
+  margin: clamp(0.6rem, 1.6vw, 1.3rem) 0 0;
+  padding: 0 var(--edge);
+  color: var(--cream);
+  font-family: var(--display);
+  font-weight: 900;
+  font-stretch: 68%;
+  font-variation-settings: 'wdth' 68, 'wght' 900;
+  font-size: clamp(1.25rem, 2.5vw, 2.4rem);
+  line-height: 0.94;
+  letter-spacing: -0.012em;
+  text-transform: uppercase;
+}
+
+.overture__rule {
+  padding: clamp(0.7rem, 1.6vw, 1.2rem) var(--edge) 0;
+  color: var(--cream);
+  opacity: 0.72;
   white-space: nowrap;
-  line-height: 0.735;
-  letter-spacing: -0.022em;
-}
-/* span 1 is the screen-reader title; 2 and 3 are the two poster lines. */
-.overture__word span:nth-of-type(2) {
-  font-size: 19.6cqi;
-}
-.overture__word span:nth-of-type(3) {
-  font-size: 16.3cqi;
+  will-change: transform;
 }
 
 .overture__cue {
   position: absolute;
-  z-index: 3;
+  z-index: 4;
   right: var(--edge);
   bottom: clamp(0.7rem, 1.6vw, 1.4rem);
   color: var(--cream);
   mix-blend-mode: difference;
 }
 
+.overture__jump {
+  position: relative;
+  z-index: 4;
+  display: inline-block;
+  margin: clamp(1rem, 2.4vw, 1.8rem) var(--edge) clamp(1.2rem, 3vw, 2.4rem);
+  padding: 0.85rem 1.6rem;
+  background: var(--yellow);
+  color: var(--ink);
+  border: 2px solid var(--ink);
+  transition: transform 180ms var(--ease-out), background-color 180ms var(--ease-out);
+}
+.overture__jump:hover,
+.overture__jump:focus-visible {
+  background: var(--cream);
+  transform: translate(-3px, -3px);
+  box-shadow: 5px 5px 0 var(--ink);
+}
+
 .overture .metarow {
   overflow: hidden;
+  position: relative;
+  z-index: 3;
 }
 .overture .metarow span {
   display: block;
-}
-
-.overture__lede {
-  margin: clamp(0.4rem, 1.4vw, 1.6rem) 0 clamp(1.4rem, 3vw, 3rem);
-  padding-left: clamp(3px, 0.5vw, 10px);
-  color: var(--cream);
-  font-family: var(--display);
-  font-weight: 900;
-  font-stretch: 62%;
-  font-variation-settings: 'wdth' 62, 'wght' 900;
-  font-size: clamp(2.6rem, 10.4vw, 13rem);
-  line-height: 0.8;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  will-change: transform;
 }
 
 /* Capability ticker — breadth stated plainly, moving on its own. */
@@ -132,23 +147,18 @@
 }
 
 @media (max-width: 860px) {
-  .overture__band {
-    height: min(72svh, 640px);
-    min-height: 340px;
+  .overture__spark {
+    right: 4%;
+    bottom: auto;
+    top: 4vh;
+    width: 74px;
   }
-  .overture__block {
-    width: 52%;
+  .overture__what {
+    font-size: clamp(1.15rem, 5.4vw, 1.9rem);
+    max-width: none;
   }
-  .overture__line {
-    line-height: 0.86;
-  }
-  .overture__word span:nth-of-type(2) {
-    font-size: 19.4cqi;
-  }
-  .overture__word span:nth-of-type(3) {
-    font-size: 16.2cqi;
-  }
-  .overture__lede {
-    font-size: 15vw;
+  .overture__jump {
+    display: block;
+    text-align: center;
   }
 }

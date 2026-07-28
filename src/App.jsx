@@ -3,11 +3,14 @@ import ChapterRail from './components/ChapterRail'
 import Overture from './components/Overture'
 import Chapter from './components/Chapter'
 import WorkIndex from './components/WorkIndex'
+import FaqChapter from './components/FaqChapter'
+import Finale from './components/Finale'
 import MailChapter from './components/MailChapter'
 import { chapters } from './content/site'
 import { initScroll, scrollToId, ScrollTrigger, reducedMotion } from './lib/motion'
 import './styles/overture.css'
 import './styles/chapter.css'
+import './styles/crew.css'
 import './styles/work-mail.css'
 
 export default function App() {
@@ -61,10 +64,12 @@ export default function App() {
 
       <main className="stage" id="stage">
         <Overture />
-        {chapters.map((chapter) => (
-          <Chapter key={chapter.id} chapter={chapter} />
+        {chapters.map((chapter, index) => (
+          <Chapter key={chapter.id} chapter={chapter} index={index} />
         ))}
         <WorkIndex />
+        <FaqChapter />
+        <Finale />
         <MailChapter />
       </main>
     </>

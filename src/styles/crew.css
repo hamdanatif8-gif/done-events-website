@@ -1,0 +1,418 @@
+/* --------------------------------------------------------------------------
+   THE PRINTED SHEET
+   A poster is a physical object with a trim, an ink rule set in from the edge,
+   a picture in a window rather than bleeding off it, and an imprint at the
+   foot. Shadow is used once, softly, to seat it — never to float it.
+   -------------------------------------------------------------------------- */
+
+.sheet {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  width: 100%;
+  padding: clamp(5px, 0.7vw, 10px);
+  background: var(--cream);
+  color: var(--ink);
+  box-shadow: 0 24px 60px -34px rgba(0, 0, 0, 0.62);
+}
+.sheet--ink {
+  background: var(--ink);
+  color: var(--cream);
+}
+.sheet--field {
+  background: var(--sheet-field, var(--yellow));
+  color: var(--ink);
+}
+
+.sheet__trim {
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: clamp(4px, 0.6vw, 9px);
+  height: 100%;
+  padding: clamp(7px, 1vw, 14px);
+  border: 1.5px solid currentColor;
+}
+
+.sheet__head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: clamp(0.42rem, 0.62vw, 0.6rem);
+  letter-spacing: 0.2em;
+  color: inherit;
+}
+
+.sheet__window {
+  position: relative;
+  overflow: hidden;
+  background: color-mix(in srgb, currentColor 16%, transparent);
+}
+.sheet__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.sheet__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* A colour field crossing the window, the way a printed band would. */
+.sheet__field {
+  position: absolute;
+  left: 0;
+  bottom: 16%;
+  width: 100%;
+  height: 13%;
+  background: var(--sheet-field, var(--yellow));
+  mix-blend-mode: multiply;
+}
+.sheet--ink .sheet__field,
+.sheet--field .sheet__field {
+  mix-blend-mode: normal;
+  opacity: 0.9;
+}
+.sheet__char {
+  position: absolute;
+  right: 6%;
+  bottom: 0;
+  width: 30%;
+}
+.sheet__char svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* The category word, set large enough that the trim crops it. */
+.sheet__word {
+  overflow: hidden;
+  font-size: clamp(1.5rem, 4.2cqw, 3.4rem);
+  font-size: clamp(1.5rem, 3.6vw, 3.4rem);
+  line-height: 0.78;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  color: inherit;
+}
+
+.sheet__foot {
+  display: grid;
+  gap: 0.25em;
+  border-top: 1.5px solid currentColor;
+  padding-top: clamp(4px, 0.6vw, 8px);
+}
+.sheet__category {
+  font-size: clamp(0.42rem, 0.62vw, 0.6rem);
+  letter-spacing: 0.18em;
+}
+.sheet__line {
+  font-family: var(--text);
+  font-size: clamp(0.56rem, 0.8vw, 0.78rem);
+  line-height: 1.24;
+  max-width: 32ch;
+}
+.sheet__imprint {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  font-size: clamp(0.38rem, 0.55vw, 0.54rem);
+  letter-spacing: 0.16em;
+  opacity: 0.74;
+}
+
+/* --------------------------------------------------------------------------
+   NOTE — the careful paragraphs. Set apart on the chapter's own colour so an
+   operational caveat reads as a deliberate statement, not small print.
+   -------------------------------------------------------------------------- */
+.chapter--note {
+  padding-top: clamp(1.4rem, 3vw, 2.6rem);
+}
+.note {
+  max-width: 62ch;
+  padding: clamp(1.1rem, 2.4vw, 2rem);
+  background: var(--note-field, var(--yellow));
+  color: var(--ink);
+  border: 2px solid var(--ink);
+}
+.note__title {
+  font-size: clamp(1.3rem, 2.4vw, 2.1rem);
+  font-stretch: 78%;
+  font-variation-settings: 'wdth' 78, 'wght' 900;
+  line-height: 0.92;
+  margin-bottom: 0.5em;
+}
+.note__text {
+  font-family: var(--text);
+  font-size: clamp(1rem, 1.3vw, 1.16rem);
+  line-height: 1.45;
+}
+
+/* --------------------------------------------------------------------------
+   PROCESS — seven stages with a rule that draws down the side as they land.
+   -------------------------------------------------------------------------- */
+.chapter--process {
+  position: relative;
+}
+.process {
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+}
+.process__num {
+  font-size: 0.86rem;
+}
+.process__title {
+  font-size: clamp(1.3rem, 2.1vw, 1.95rem) !important;
+}
+.process__spine {
+  position: absolute;
+  left: var(--edge);
+  top: clamp(34px, 6vh, 96px);
+  width: 2px;
+  height: calc(100% - clamp(34px, 6vh, 96px));
+  background: var(--ink);
+  opacity: 0.24;
+  will-change: transform;
+}
+
+/* Pinned scene — the character walking the floor under the travelling word. */
+.pinned__char {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  bottom: 4%;
+  width: clamp(70px, 9vw, 140px);
+  will-change: transform;
+}
+.pinned__char svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* --------------------------------------------------------------------------
+   FAQ — inside the publication, on the cream stock, at chapter scale.
+   -------------------------------------------------------------------------- */
+.faq {
+  position: relative;
+  padding: clamp(34px, 6vh, 96px) var(--edge) clamp(40px, 8vh, 110px);
+  background: var(--cream);
+  color: var(--ink);
+}
+.faq__layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.28fr);
+  gap: clamp(1.6rem, 4vw, 4rem);
+  align-items: start;
+}
+.faq__list {
+  border-top: 2px solid var(--ink);
+}
+.faq__item {
+  border-bottom: 2px solid var(--ink);
+  will-change: transform;
+}
+.faq__heading {
+  margin: 0;
+}
+.faq__trigger {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(0.7rem, 1.8vw, 1.6rem);
+  width: 100%;
+  padding: clamp(0.85rem, 1.8vw, 1.35rem) 0;
+  background: none;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  transition: color 160ms var(--ease-out);
+}
+.faq__trigger:hover .faq__q {
+  transform: translateX(6px);
+}
+.faq__num {
+  color: color-mix(in srgb, var(--ink) 56%, transparent);
+}
+.faq__q {
+  font-size: clamp(1.15rem, 2.3vw, 2.05rem);
+  line-height: 0.98;
+  letter-spacing: -0.014em;
+  font-stretch: 78%;
+  font-variation-settings: 'wdth' 78, 'wght' 900;
+  transition: transform 220ms var(--ease-out);
+}
+.faq__mark {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+.faq__mark::before,
+.faq__mark::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 18px;
+  height: 2.5px;
+  background: currentColor;
+  transform: translate(-50%, -50%);
+  transition: transform 260ms var(--ease-out);
+}
+.faq__mark::after {
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+.faq__item[data-open] .faq__mark::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+.faq__panel[hidden] {
+  display: none;
+}
+.faq__a {
+  max-width: 68ch;
+  padding: 0 0 clamp(1rem, 2.2vw, 1.7rem);
+}
+.faq__char {
+  position: sticky;
+  top: 24vh;
+  width: 100%;
+  max-width: 190px;
+  justify-self: end;
+}
+
+/* --------------------------------------------------------------------------
+   FINALE — the chapters return as sheets, the name comes back, the crew
+   walks in front of it.
+   -------------------------------------------------------------------------- */
+.finale {
+  position: relative;
+  background: var(--blue);
+}
+.finale__stage {
+  position: relative;
+  height: 100svh;
+  overflow: hidden;
+  background: var(--blue);
+  display: grid;
+  place-items: center;
+}
+
+.finale__sheets {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  will-change: transform;
+}
+.finale__sheet {
+  position: absolute;
+  width: min(30vw, 340px);
+  will-change: transform;
+}
+
+.finale__type {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 0 var(--edge);
+  will-change: transform;
+}
+.finale__type svg {
+  width: 100%;
+  height: auto;
+}
+
+.finale__crew {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: clamp(2.6rem, 8vh, 6rem);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: clamp(0.2rem, 1.4vw, 1.4rem);
+  padding: 0 var(--edge);
+}
+.finale__member {
+  width: clamp(38px, 6.2vw, 96px);
+  will-change: transform;
+}
+.finale__member svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.finale__sign {
+  position: absolute;
+  z-index: 4;
+  left: var(--edge);
+  bottom: clamp(0.9rem, 2.6vh, 2rem);
+  display: grid;
+  gap: 0.3rem;
+  color: var(--cream);
+  will-change: transform;
+}
+.finale__signline {
+  font-size: clamp(1.6rem, 3.4vw, 3.2rem);
+  line-height: 0.9;
+  font-stretch: 74%;
+  font-variation-settings: 'wdth' 74, 'wght' 900;
+}
+.finale__signmeta {
+  opacity: 0.8;
+}
+
+@media (max-width: 860px) {
+  .faq__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .faq__char {
+    display: none;
+  }
+  .finale__sheet {
+    width: min(52vw, 240px);
+  }
+  .finale__member {
+    width: 9vw;
+  }
+  .finale__crew {
+    bottom: 16vh;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   REDUCED MOTION — the scenes are never animated into place, so the stacks
+   that a timeline would have spread out are given a static spread here. The
+   visitor gets the finished composition, not a pile.
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .poster__plane {
+    transform: translate(-18%, 6%) rotate(-7deg);
+  }
+  .poster__trail--1 {
+    transform: translate(6%, -4%) rotate(5deg);
+  }
+  .poster__trail--2 {
+    transform: translate(26%, -12%) rotate(13deg);
+  }
+  .finale__sheet:nth-child(odd) {
+    transform: translate(-38%, 4%) rotate(-9deg);
+  }
+  .finale__sheet:nth-child(even) {
+    transform: translate(34%, -6%) rotate(8deg);
+  }
+  .finale__sheet:nth-child(3n) {
+    transform: translate(-4%, 12%) rotate(2deg);
+  }
+  /* The crew is never brought forward by a pointer, so show them all. */
+  .crew__member {
+    opacity: 0.9;
+    filter: none;
+  }
+  .crew__tag {
+    opacity: 1;
+  }
+}
