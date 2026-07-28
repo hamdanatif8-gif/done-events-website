@@ -1,38 +1,72 @@
-import { Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect } from 'react'
-import Navbar from './components/Navbar'
-import Footer from './components/Footer'
-import WhatsAppButton from './components/WhatsAppButton'
-import Home from './pages/Home'
-import Services from './pages/Services'
-import Portfolio from './pages/Portfolio'
-import About from './pages/About'
-import Contact from './pages/Contact'
+import { useEffect, useState } from 'react'
+import ChapterRail from './components/ChapterRail'
+import Overture from './components/Overture'
+import Chapter from './components/Chapter'
+import WorkIndex from './components/WorkIndex'
+import MailChapter from './components/MailChapter'
+import { chapters } from './content/site'
+import { initScroll, scrollToId, ScrollTrigger, reducedMotion } from './lib/motion'
+import './styles/overture.css'
+import './styles/chapter.css'
+import './styles/work-mail.css'
 
-function ScrollToTop() {
-  const { pathname } = useLocation()
+export default function App() {
+  const [active, setActive] = useState('home')
+
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
-  return null
-}
+    const teardown = initScroll()
+    const triggers = []
 
-function App() {
+    // The active chapter is the last one whose threshold has passed the reading
+    // line. State changes on crossings only — no per-frame React work.
+    const sections = [...document.querySelectorAll('[data-chapter]')]
+    sections.forEach((section, i) => {
+      const id = section.dataset.chapter
+      const previous = i === 0 ? 'home' : sections[i - 1].dataset.chapter
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: section,
+          start: 'top 42%',
+          end: 'max',
+          onEnter: () => setActive(id),
+          onEnterBack: () => setActive(id),
+          onLeaveBack: () => setActive(previous),
+        }),
+      )
+    })
+
+    // Honour a deep link once layout has settled.
+    const hash = window.location.hash.replace('#', '')
+    if (hash) {
+      const jump = () => scrollToId(hash, { immediate: true })
+      requestAnimationFrame(() => requestAnimationFrame(jump))
+      window.addEventListener('load', jump, { once: true })
+    }
+
+    if (reducedMotion()) document.documentElement.dataset.reducedMotion = 'true'
+
+    return () => {
+      triggers.forEach((trigger) => trigger.kill())
+      teardown()
+    }
+  }, [])
+
   return (
     <>
-      <ScrollToTop />
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-      <Footer />
-      <WhatsAppButton />
+      <a className="skip" href="#ch00">
+        Skip to content
+      </a>
+
+      <ChapterRail active={active} />
+
+      <main className="stage" id="stage">
+        <Overture />
+        {chapters.map((chapter) => (
+          <Chapter key={chapter.id} chapter={chapter} />
+        ))}
+        <WorkIndex />
+        <MailChapter />
+      </main>
     </>
   )
 }
-
-export default App
