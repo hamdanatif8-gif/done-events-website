@@ -168,3 +168,255 @@
     mask-repeat: repeat-x;
   }
 }
+
+/* --------------------------------------------------------------------------
+   THE GROUND — two fixed planes behind the document. The arriving colour
+   wipes across the second plane, then hands off to the first.
+   -------------------------------------------------------------------------- */
+.ground {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.ground__plane {
+  position: absolute;
+  inset: 0;
+  background: var(--blue);
+}
+.ground__plane--wipe {
+  clip-path: inset(0% 100% 0% 0%);
+  will-change: clip-path;
+}
+
+/* --------------------------------------------------------------------------
+   THE INDEX TOGGLE — sits at the head of the rail, in the rail's own idiom.
+   -------------------------------------------------------------------------- */
+.rail__toggle {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  width: 100%;
+  min-height: 46px;
+  padding: 2px 4px 8px;
+  margin-bottom: clamp(2px, 0.8vh, 10px);
+  background: none;
+  border: 0;
+  border-bottom: 2px solid var(--cream);
+  color: var(--cream);
+  cursor: pointer;
+  text-align: left;
+}
+.rail__toggle-label {
+  font-family: var(--mono);
+  font-size: clamp(0.44rem, 0.56vw, 0.6rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: color 180ms var(--ease-out);
+}
+/* Two bars that become a cross when the index is open. */
+.rail__toggle-mark {
+  position: relative;
+  display: block;
+  width: 60%;
+  height: 10px;
+}
+.rail__toggle-mark::before,
+.rail__toggle-mark::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transition: transform 340ms var(--ease-out);
+}
+.rail__toggle-mark::before {
+  top: 1px;
+}
+.rail__toggle-mark::after {
+  top: 7px;
+}
+.rail[data-open] .rail__toggle-mark::before {
+  transform: translateY(3px) rotate(45deg);
+}
+.rail[data-open] .rail__toggle-mark::after {
+  transform: translateY(-3px) rotate(-45deg);
+}
+@media (hover: hover) {
+  .rail__toggle:hover .rail__toggle-label {
+    color: var(--yellow);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   THE EXPANDED INDEX — the rail's colour pushed across the viewport, with the
+   chapter lines arriving in sequence and the crew standing beside them.
+   -------------------------------------------------------------------------- */
+.index {
+  position: fixed;
+  inset: 0 0 0 var(--rail);
+  z-index: 58;
+  background: var(--blue);
+  color: var(--cream);
+  clip-path: inset(0% 100% 0% 0%);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  will-change: clip-path;
+}
+.index[aria-hidden='true'] {
+  pointer-events: none;
+}
+
+.index__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.4fr);
+  gap: clamp(1.4rem, 4vw, 4rem);
+  align-items: start;
+  min-height: 100%;
+  padding: clamp(1.4rem, 4vh, 3.4rem) var(--edge);
+}
+
+.index__list {
+  display: grid;
+  align-content: center;
+  min-height: 100%;
+}
+.index__row {
+  border-bottom: 1px solid color-mix(in srgb, var(--cream) 34%, transparent);
+  will-change: transform, opacity;
+}
+.index__row a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: clamp(0.6rem, 2vw, 1.6rem);
+  padding: clamp(0.32rem, 1vh, 0.8rem) 0;
+}
+.index__num {
+  opacity: 0.55;
+}
+.index__label {
+  font-size: clamp(1.5rem, 4.4vh, 3.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.02em;
+  font-stretch: 70%;
+  font-variation-settings: 'wdth' 70, 'wght' 900;
+  transition: font-variation-settings 320ms var(--ease-out), transform 320ms var(--ease-out);
+}
+.index__title {
+  opacity: 0.6;
+  text-align: right;
+  transition: opacity 260ms var(--ease-out), color 260ms var(--ease-out);
+}
+.index__row[data-active='true'] .index__label {
+  color: var(--yellow);
+}
+@media (hover: hover) {
+  .index__row a:hover .index__label,
+  .index__row a:focus-visible .index__label {
+    font-variation-settings: 'wdth' 96, 'wght' 900;
+    transform: translateX(8px);
+  }
+  .index__row a:hover .index__title,
+  .index__row a:focus-visible .index__title {
+    opacity: 1;
+    color: var(--yellow);
+  }
+}
+
+.index__aside {
+  display: grid;
+  gap: clamp(0.7rem, 2vh, 1.4rem);
+  justify-items: start;
+  align-content: center;
+  min-height: 100%;
+}
+.index__char {
+  width: clamp(96px, 15vh, 190px);
+}
+.index__char svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.index__caption {
+  opacity: 0.72;
+}
+.index__contact {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+.index__contact dt {
+  opacity: 0.6;
+  margin-bottom: 0.1rem;
+}
+.index__contact dd {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 900;
+  font-stretch: 76%;
+  font-variation-settings: 'wdth' 76, 'wght' 900;
+  text-transform: uppercase;
+  font-size: clamp(0.95rem, 1.5vw, 1.25rem);
+  line-height: 1;
+}
+.index__contact a {
+  border-bottom: 2px solid transparent;
+  transition: border-color 180ms var(--ease-out);
+}
+@media (hover: hover) {
+  .index__contact a:hover {
+    border-bottom-color: var(--yellow);
+  }
+}
+.index__sign {
+  opacity: 0.5;
+}
+
+@media (max-width: 860px) {
+  .rail__toggle {
+    order: -1;
+    width: auto;
+    min-width: 62px;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    padding: 0 10px;
+    justify-content: center;
+    border-bottom: 0;
+    border-right: 2px solid var(--cream);
+  }
+  .rail__toggle-mark {
+    width: 22px;
+  }
+
+  .index {
+    inset: var(--railbar, 56px) 0 0 0;
+  }
+  .index__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.4rem;
+  }
+  .index__list {
+    align-content: start;
+    min-height: 0;
+  }
+  .index__row a {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 0.5rem 0;
+  }
+  .index__title {
+    display: none;
+  }
+  .index__aside {
+    min-height: 0;
+    align-content: start;
+  }
+  .index__char {
+    width: 84px;
+  }
+}

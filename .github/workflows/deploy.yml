@@ -28,7 +28,12 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # Pages serves from a repository subpath; Netlify serves from the root.
+      # vite.config.js defaults to '/', so the subpath is set here only.
       - run: npm run build
+        env:
+          DEPLOY_BASE: /done-events-website/
 
       - name: Add Pages extras
         run: |

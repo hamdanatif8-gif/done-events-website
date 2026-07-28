@@ -54,6 +54,37 @@ export function initScroll() {
   }
 }
 
+/**
+ * Stop and restart the scroll engine — used while the chapter index is open.
+ *
+ * This deliberately does not touch `body` overflow or position: doing so
+ * changes the layout, which shifts the page under a fixed overlay and loses
+ * the reading position. Stopping Lenis freezes the page exactly where it is,
+ * and the native fallback only blocks the wheel.
+ */
+let unlock = null
+export function lockScroll(locked) {
+  if (lenis) {
+    if (locked) lenis.stop()
+    else lenis.start()
+    return
+  }
+  // Reduced motion / no Lenis: block wheel and touch without moving anything.
+  if (locked && !unlock) {
+    const block = (event) => event.preventDefault()
+    const options = { passive: false }
+    window.addEventListener('wheel', block, options)
+    window.addEventListener('touchmove', block, options)
+    unlock = () => {
+      window.removeEventListener('wheel', block, options)
+      window.removeEventListener('touchmove', block, options)
+      unlock = null
+    }
+  } else if (!locked && unlock) {
+    unlock()
+  }
+}
+
 /** Scroll to a section id, respecting the fixed rail bar on small screens. */
 export function scrollToId(id, { immediate = false } = {}) {
   const el = document.getElementById(id)

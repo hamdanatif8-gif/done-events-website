@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import ChapterRail from './components/ChapterRail'
+import StageGround from './components/StageGround'
 import Overture from './components/Overture'
 import Chapter from './components/Chapter'
 import WorkIndex from './components/WorkIndex'
@@ -13,6 +14,16 @@ import './styles/chapter.css'
 import './styles/crew.css'
 import './styles/work-mail.css'
 
+// The ground colour each section paints the page. The overture and the finale
+// both sit on the electric blue, which is what closes the loop.
+const grounds = {
+  home: 'var(--blue)',
+  ...Object.fromEntries(chapters.map((c) => [c.id, c.field])),
+  work: 'var(--cream)',
+  faq: 'var(--cream)',
+  mail: 'var(--blue)',
+}
+
 export default function App() {
   const [active, setActive] = useState('home')
 
@@ -22,6 +33,10 @@ export default function App() {
 
     // The active chapter is the last one whose threshold has passed the reading
     // line. State changes on crossings only — no per-frame React work.
+    //
+    // The threshold sits above the section's own top so the ground has already
+    // begun changing colour as the chapter arrives, rather than snapping to it
+    // once the chapter is fully in view.
     const sections = [...document.querySelectorAll('[data-chapter]')]
     sections.forEach((section, i) => {
       const id = section.dataset.chapter
@@ -29,7 +44,7 @@ export default function App() {
       triggers.push(
         ScrollTrigger.create({
           trigger: section,
-          start: 'top 42%',
+          start: 'top 78%',
           end: 'max',
           onEnter: () => setActive(id),
           onEnterBack: () => setActive(id),
@@ -59,6 +74,8 @@ export default function App() {
       <a className="skip" href="#ch00">
         Skip to content
       </a>
+
+      <StageGround field={grounds[active]} />
 
       <ChapterRail active={active} />
 

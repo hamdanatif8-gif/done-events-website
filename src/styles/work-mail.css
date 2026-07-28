@@ -497,3 +497,33 @@
     flex-wrap: wrap;
   }
 }
+
+/* The honeypot: a real field a bot will fill and a person will never see.
+   Kept out of the layout and out of the accessibility tree rather than
+   display:none, which some bots detect. */
+.brief__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.brief__note[data-state='sent'] {
+  color: var(--yellow);
+}
+.brief__note[data-state='error'] {
+  color: var(--yellow);
+  max-width: 44ch;
+}
+.brief__note a {
+  border-bottom: 2px solid currentColor;
+}
+.brief__submit:disabled {
+  opacity: 0.62;
+  cursor: default;
+}
+.brief__submit:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}

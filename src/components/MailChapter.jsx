@@ -41,9 +41,16 @@ const YES_NO = [
  * load figures, no lighting values, no timelines and no price. Nothing here
  * implies knowledge the company does not have until it has spoken to you.
  */
+/** Netlify's form endpoint takes a urlencoded POST back to the same origin. */
+const encode = (data) =>
+  Object.entries(data)
+    .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(Array.isArray(v) ? v.join(', ') : v)}`)
+    .join('&')
+
 export default function MailChapter() {
   const [form, setForm] = useState(EMPTY)
-  const [sent, setSent] = useState(false)
+  const [status, setStatus] = useState('idle') // idle | sending | sent | error
+  const [trap, setTrap] = useState('')
 
   const set = (key) => (event) => {
     const { value, type, checked } = event.target
@@ -114,9 +121,9 @@ export default function MailChapter() {
     )
   }, [])
 
-  const onSubmit = (event) => {
-    event.preventDefault()
-    const lines = [
+  // The brief as plain text — used for the mailto fallback if the POST fails.
+  const asText = () =>
+    [
       `Name: ${form.name}`,
       form.company && `Company: ${form.company}`,
       `Email: ${form.email}`,
@@ -135,11 +142,41 @@ export default function MailChapter() {
       '',
       'Event vision:',
       form.message,
-    ].filter((line) => line !== false && line !== undefined)
+    ]
+      .filter(Boolean)
+      .join('\n')
 
-    const subject = `Event brief — ${form.eventType || 'Enquiry'}${form.emirate ? `, ${form.emirate}` : ''}`
-    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
-    setSent(true)
+  const mailtoHref = `mailto:${contact.email}?subject=${encodeURIComponent(
+    `Event brief — ${form.eventType || 'Enquiry'}${form.emirate ? `, ${form.emirate}` : ''}`,
+  )}&body=${encodeURIComponent(asText())}`
+
+  /**
+   * Posts the brief to Netlify's form handler. If that is unavailable — a
+   * local build, a preview, an outage — the brief is not lost: the visitor is
+   * handed the same content as a prepared email instead of a dead end.
+   */
+  const onSubmit = async (event) => {
+    event.preventDefault()
+    if (trap) return // honeypot filled: a bot, silently discarded
+    setStatus('sending')
+
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: encode({
+          'form-name': 'event-brief',
+          'company-website': '',
+          ...form,
+          services: form.services,
+        }),
+      })
+      if (!response.ok) throw new Error(String(response.status))
+      setStatus('sent')
+      setForm(EMPTY)
+    } catch {
+      setStatus('error')
+    }
   }
 
   return (
@@ -156,7 +193,27 @@ export default function MailChapter() {
       <p className="mail__lede">{mail.lede}</p>
 
       <div className="mail__layout">
-        <form className="brief" onSubmit={onSubmit}>
+        <form
+          className="brief"
+          name="event-brief"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="company-website"
+          onSubmit={onSubmit}
+        >
+          <input type="hidden" name="form-name" value="event-brief" />
+          <p className="brief__trap" aria-hidden="true">
+            <label htmlFor="b-website">Do not fill this in</label>
+            <input
+              id="b-website"
+              name="company-website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={trap}
+              onChange={(event) => setTrap(event.target.value)}
+            />
+          </p>
+
           <fieldset className="brief__set">
             <legend className="brief__legend u-mono">Who you are</legend>
             <div className="brief__grid">
@@ -324,14 +381,25 @@ export default function MailChapter() {
           </fieldset>
 
           <div className="brief__actions">
-            <button type="submit" className="brief__submit u-display">
-              Send the brief
+            <button
+              type="submit"
+              className="brief__submit u-display"
+              disabled={status === 'sending' || status === 'sent'}
+            >
+              {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent' : 'Send the brief'}
             </button>
-            <span className="u-mono brief__note" role="status">
-              {sent
-                ? 'Your mail app should now be open with the brief ready to send.'
-                : 'Opens in your mail app, addressed to us.'}
-            </span>
+
+            <p className="u-mono brief__note" role="status" aria-live="polite" data-state={status}>
+              {status === 'sent' && 'Thank you — the brief is with us. We will come back to you shortly.'}
+              {status === 'sending' && 'Sending the brief…'}
+              {status === 'error' && (
+                <>
+                  That did not send. <a href={mailtoHref}>Send it as an email instead</a>, or call{' '}
+                  <a href={`tel:${contact.phoneHref}`}>{contact.phoneDisplay}</a>.
+                </>
+              )}
+              {status === 'idle' && 'Goes straight to the team in Dubai.'}
+            </p>
           </div>
         </form>
 
