@@ -420,3 +420,51 @@
     width: 84px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   ATMOSPHERE — two soft blooms drifting behind everything, on long periods.
+   The page is never completely still even where nothing is moving. Transform
+   only, so it costs a composite and nothing else.
+   -------------------------------------------------------------------------- */
+.ground__air {
+  position: absolute;
+  inset: -25%;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: soft-light;
+}
+.ground__bloom {
+  position: absolute;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(60px);
+  will-change: transform;
+}
+.ground__bloom--a {
+  left: 2%;
+  top: 6%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), transparent 68%);
+  animation: drift-a 46s ease-in-out infinite alternate;
+}
+.ground__bloom--b {
+  right: 0%;
+  bottom: 2%;
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.7), transparent 66%);
+  animation: drift-b 61s ease-in-out infinite alternate;
+}
+@keyframes drift-a {
+  to {
+    transform: translate3d(22%, 14%, 0) scale(1.18);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(-18%, -12%, 0) scale(1.12);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ground__bloom {
+    animation: none;
+  }
+}

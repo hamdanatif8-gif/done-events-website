@@ -158,6 +158,7 @@ export const chapters = [
     cover: { layout: 'stand', scale: 0.9, x: 62, numberPlace: 'right' },
     footLeft: 'DONE EVENTS & ENTERTAINMENT',
     footRight: 'DUBAI, UNITED ARAB EMIRATES',
+    divisions: true,
     heading: 'ONE TEAM,\nEND TO END',
     lede: 'DONE Events & Entertainment is a Dubai events company. Planning, creative direction, production, entertainment and hospitality sit under one line of responsibility, so the idea and the plan that delivers it are made in the same room.',
     body: [
@@ -492,6 +493,88 @@ export const work = {
     },
   ],
 }
+
+// ---------------------------------------------------------------------------
+// THE DIVISIONS — the plain answer to "what does this company actually do".
+//
+// This is the one place a visitor can see the whole offer at once, early,
+// without reading eight chapters first. Each division points at the chapter
+// that covers it, so the index is also navigation. One factual line each; no
+// adjectives doing work that a noun should do.
+// ---------------------------------------------------------------------------
+
+export const divisions = [
+  {
+    number: '01',
+    title: 'Corporate',
+    line: 'Conferences, summits, launches, awards and gala dinners.',
+    chapter: 'ch01',
+    character: 'plinth',
+  },
+  {
+    number: '02',
+    title: 'Private & VIP',
+    line: 'Milestones, majlis and social occasions, with confidentiality where needed.',
+    chapter: 'ch02',
+    character: 'veil',
+  },
+  {
+    number: '03',
+    title: 'Weddings',
+    line: 'Cultural and contemporary celebrations, coordinated end to end.',
+    chapter: 'ch03',
+    character: 'knot',
+  },
+  {
+    number: '04',
+    title: 'Live entertainment',
+    line: 'Concerts and live shows; local and international artists.',
+    chapter: 'ch04',
+    character: 'pulse',
+  },
+  {
+    number: '05',
+    title: 'Production',
+    line: 'Stage, set, lighting, audio, video and show control.',
+    chapter: 'ch05',
+    character: 'rig',
+  },
+  {
+    number: '06',
+    title: 'Hospitality',
+    line: 'Guest experience, front of house and service operations.',
+    chapter: 'ch06',
+    character: 'carafe',
+  },
+  {
+    number: '07',
+    title: 'Catering',
+    line: 'Menus and service, through the venue or through catering partners.',
+    chapter: 'ch06',
+    character: 'carafe',
+  },
+  {
+    number: '08',
+    title: 'Outdoor & beach',
+    line: 'Waterfront, resort and open-air formats, planned around weather and power.',
+    chapter: 'ch06',
+    character: 'beacon',
+  },
+  {
+    number: '09',
+    title: 'Brand activations',
+    line: 'A campaign idea built as a physical encounter, staffed and run on site.',
+    chapter: 'ch01',
+    character: 'spark',
+  },
+  {
+    number: '10',
+    title: 'Turnkey delivery',
+    line: 'One team holding brief, budget, suppliers, schedule and the live event.',
+    chapter: 'ch07',
+    character: 'composite',
+  },
+]
 
 // A moving capability line — breadth without claims or logos.
 export const capabilities = [

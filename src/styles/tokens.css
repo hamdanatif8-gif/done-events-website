@@ -17,6 +17,11 @@
   --cyan: #83d9f2;
   --lilac: #bfa9ff;
 
+  /* The one dark moment in the publication: the house lights going down for
+     CH.04. Warm, not neutral — a room, not a UI. */
+  --house: #17110d;
+  --copper: #c9793a;
+
   /* The page ground — swapped per chapter by the scroll engine */
   --stage: var(--blue);
   --stage-ink: var(--cream);

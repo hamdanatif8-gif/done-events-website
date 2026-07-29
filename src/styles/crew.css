@@ -416,3 +416,155 @@
     opacity: 1;
   }
 }
+
+/* --------------------------------------------------------------------------
+   THE DIVISIONS — the commercial answer, set as an editorial table.
+   Rows, not cards: the numbering and the rules are the design.
+   -------------------------------------------------------------------------- */
+.divisions {
+  position: relative;
+  margin-top: clamp(2.2rem, 6vh, 5rem);
+  padding-top: clamp(1.2rem, 2.6vw, 2.2rem);
+}
+.divisions__rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--ink);
+  will-change: transform;
+}
+
+.divisions__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem 1.5rem;
+  margin-bottom: clamp(1rem, 2.4vw, 1.8rem);
+}
+.divisions__title {
+  font-size: clamp(1.9rem, 4.6vw, 4.2rem);
+  line-height: 0.88;
+  letter-spacing: -0.024em;
+  font-stretch: 72%;
+  font-variation-settings: 'wdth' 72, 'wght' 900;
+  color: var(--ink);
+}
+.divisions__meta {
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
+}
+
+.divisions__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.34fr);
+  gap: clamp(1.4rem, 3.4vw, 3.4rem);
+  align-items: start;
+}
+
+.divisions__list {
+  border-top: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.divisions__row {
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  will-change: transform, opacity;
+  transition: background-color 240ms var(--ease-out);
+}
+.divisions__row[data-active='true'] {
+  background: color-mix(in srgb, var(--yellow) 32%, transparent);
+}
+.divisions__row a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 0.9fr) minmax(0, 1.4fr) auto;
+  align-items: baseline;
+  gap: clamp(0.6rem, 1.8vw, 1.6rem);
+  padding: clamp(0.6rem, 1.3vw, 1rem) clamp(0.2rem, 0.6vw, 0.5rem);
+}
+.divisions__num {
+  color: color-mix(in srgb, var(--ink) 52%, transparent);
+}
+.divisions__name {
+  font-size: clamp(1.05rem, 1.9vw, 1.75rem);
+  line-height: 0.98;
+  letter-spacing: -0.014em;
+  font-stretch: 76%;
+  font-variation-settings: 'wdth' 76, 'wght' 900;
+  transition: font-variation-settings 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+.divisions__row[data-active='true'] .divisions__name {
+  font-variation-settings: 'wdth' 94, 'wght' 900;
+  transform: translateX(5px);
+}
+.divisions__line {
+  font-family: var(--text);
+  font-size: clamp(0.85rem, 1.08vw, 1rem);
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--ink) 76%, transparent);
+}
+.divisions__go {
+  color: color-mix(in srgb, var(--ink) 46%, transparent);
+  transition: color 240ms var(--ease-out);
+}
+.divisions__row[data-active='true'] .divisions__go {
+  color: var(--ink);
+}
+
+.divisions__aside {
+  position: sticky;
+  top: 18vh;
+}
+.divisions__stage {
+  display: grid;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: clamp(0.8rem, 2vw, 1.6rem);
+  border: 2px solid var(--ink);
+}
+.divisions__char {
+  width: clamp(80px, 9vw, 132px);
+}
+.divisions__char svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.divisions__caption {
+  font-size: clamp(1rem, 1.5vw, 1.35rem);
+  line-height: 1;
+  font-stretch: 76%;
+  font-variation-settings: 'wdth' 76, 'wght' 900;
+  text-align: center;
+  color: var(--ink);
+}
+.divisions__note {
+  color: color-mix(in srgb, var(--ink) 54%, transparent);
+}
+
+@media (max-width: 860px) {
+  .divisions__layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .divisions__aside {
+    display: none;
+  }
+  .divisions__row a {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'num name go'
+      'num line line';
+    row-gap: 0.25rem;
+  }
+  .divisions__num {
+    grid-area: num;
+  }
+  .divisions__name {
+    grid-area: name;
+  }
+  .divisions__line {
+    grid-area: line;
+  }
+  .divisions__go {
+    grid-area: go;
+  }
+}

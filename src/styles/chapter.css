@@ -422,7 +422,7 @@
    -------------------------------------------------------------------------- */
 .reel {
   position: relative;
-  background: var(--ink);
+  background: var(--house);
 }
 .reel__stage {
   position: relative;
@@ -430,12 +430,45 @@
   display: grid;
   place-items: center;
   overflow: hidden;
-  background: var(--ink);
+  background: var(--house);
+}
+/* The copper wash that rises behind the screen as the slot opens. */
+.reel__wash {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(120vw, 1700px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--copper) 62%, transparent),
+    transparent 62%
+  );
+  will-change: transform, opacity;
+  pointer-events: none;
 }
 .reel__frame {
+  position: relative;
+  z-index: 1;
   width: min(94vw, 1500px);
   aspect-ratio: 16 / 9;
   will-change: clip-path, transform;
+}
+/* Pulse at the edge of the stage, lit by the screen. */
+.reel__char {
+  position: absolute;
+  z-index: 2;
+  left: 4%;
+  bottom: 4%;
+  width: clamp(74px, 9vw, 148px);
+  will-change: transform;
+  pointer-events: none;
+}
+.reel__char svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
 }
 .reel__frame video {
   width: 100%;
@@ -444,9 +477,10 @@
 }
 .reel__caption {
   position: absolute;
+  z-index: 3;
   left: var(--edge);
   bottom: clamp(1rem, 3vw, 2.4rem);
-  color: var(--cream);
+  color: var(--copper);
   overflow: hidden;
 }
 

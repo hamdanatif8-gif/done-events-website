@@ -51,6 +51,11 @@ export default function StageGround({ field }) {
     <div className="ground" aria-hidden="true">
       <div className="ground__plane" ref={base} />
       <div className="ground__plane ground__plane--wipe" ref={wipe} />
+      {/* Slow blooms, so the ground is never completely inert. */}
+      <div className="ground__air">
+        <span className="ground__bloom ground__bloom--a" />
+        <span className="ground__bloom ground__bloom--b" />
+      </div>
     </div>
   )
 }

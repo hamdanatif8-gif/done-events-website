@@ -1,17 +1,27 @@
 import { useRef } from 'react'
+import Character from './Character'
 import { useScene, gsap, ScrollTrigger, reducedMotion } from '../lib/motion'
+import { animateCharacter } from '../lib/characterMotion'
 
 const base = import.meta.env.BASE_URL
 
 /**
- * The live plane. A pinned video that opens out of a letterbox slot as it is
- * scrolled through, and only plays while it is on screen.
+ * THE LIVE PLANE — the one dark moment in the publication.
+ *
+ * The house lights go down for CH.04: the ground goes to a warm near-black
+ * rather than a neutral one, a copper wash rises behind the frame, and the
+ * letterbox slot opens as the visitor scrolls through it. Pulse stands at the
+ * edge of the stage, lit from the screen.
+ *
+ * It is an interlude, not a theme. Nothing else on the site goes dark, and the
+ * chapter's own colour returns the moment the scene is past.
  */
 export default function Reel({ caption }) {
   const video = useRef(null)
 
   const scope = useScene((self, root) => {
     const q = gsap.utils.selector(root)
+    animateCharacter(q('.reel__char svg')[0], 'beat')
 
     gsap
       .timeline({
@@ -30,6 +40,8 @@ export default function Reel({ caption }) {
         { clipPath: 'inset(0% 0% 0% 0%)', scale: 1, ease: 'none' },
         0,
       )
+      .fromTo(q('.reel__wash'), { opacity: 0, scale: 0.82 }, { opacity: 1, scale: 1.12, ease: 'none' }, 0)
+      .fromTo(q('.reel__char'), { xPercent: -60, yPercent: 30 }, { xPercent: 24, yPercent: 0, ease: 'none' }, 0)
       .fromTo(q('.reel__caption'), { yPercent: 120 }, { yPercent: 0, ease: 'none', duration: 0.4 }, 0.2)
 
     ScrollTrigger.create({
@@ -48,6 +60,8 @@ export default function Reel({ caption }) {
   return (
     <section className="reel" ref={scope}>
       <div className="reel__stage">
+        <span className="reel__wash" aria-hidden="true" />
+
         <figure className="reel__frame plate">
           <video
             ref={video}
@@ -63,6 +77,11 @@ export default function Reel({ caption }) {
             <source src={`${base}media/showreel.mp4`} type="video/mp4" />
           </video>
         </figure>
+
+        <div className="reel__char" aria-hidden="true">
+          <Character name="pulse" />
+        </div>
+
         <p className="reel__caption u-mono">{caption}</p>
       </div>
     </section>

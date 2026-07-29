@@ -3,6 +3,7 @@ import PosterPlane from './PosterPlane'
 import Reel from './Reel'
 import PinnedScene from './PinnedScene'
 import CharacterScene from './CharacterScene'
+import Divisions from './Divisions'
 import { ImagePlane, MaskedType, MassiveType, MetaLine } from './primitives'
 import { brand } from '../content/site'
 import { useScene, gsap } from '../lib/motion'
@@ -252,6 +253,8 @@ export default function Chapter({ chapter, index }) {
             ))}
           </div>
         </div>
+
+        {chapter.divisions && <Divisions />}
 
         {chapter.standards && (
           <ol className="rowset standards">
