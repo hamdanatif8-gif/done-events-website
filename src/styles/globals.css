@@ -1,0 +1,288 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+@theme {
+  --font-sans: 'Barlow', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+
+  --color-nova-black: #070809;
+  --color-nova-ink: #0a0a0a;
+  --color-nova-warm: #e7a15f;
+  --color-nova-blue: #9eb6c9;
+  --color-nova-line: rgba(255, 255, 255, 0.16);
+  --color-nova-muted: rgba(255, 255, 255, 0.62);
+  --color-nova-soft: rgba(255, 255, 255, 0.86);
+}
+
+/* ------------------------------------------------------------------ base */
+
+html {
+  background-color: var(--nova-black);
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--nova-black);
+  color: var(--nova-soft-white);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* The page owns a horizontal clip so no scene can ever produce a sideways
+   scrollbar, while vertical scrolling stays native. */
+#root {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip;
+}
+
+::selection {
+  background: rgba(231, 161, 95, 0.28);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--nova-warm);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Anchor targets clear the floating navigation. */
+[id] {
+  scroll-margin-top: 104px;
+}
+
+.nova-skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 200;
+  padding: 12px 18px;
+  background: #fff;
+  color: #070809;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 0 0 var(--r-panel-sm) 0;
+}
+.nova-skip-link:focus {
+  left: 0;
+}
+
+/* ------------------------------------------------------------------ grid */
+
+.nova-shell {
+  width: 100%;
+  padding-inline: var(--nova-gutter);
+  margin-inline: auto;
+  max-width: 1760px;
+}
+
+.nova-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(16px, 2vw, 32px);
+}
+
+@media (max-width: 900px) {
+  .nova-grid {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+.nova-measure {
+  max-width: var(--nova-measure);
+}
+
+/* --------------------------------------------------------------- type */
+
+.type-hero {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(4.2rem, 9vw, 9rem);
+  line-height: 0.86;
+  letter-spacing: -0.04em;
+  color: #fff;
+  text-shadow: 0 2px 40px rgba(4, 6, 9, 0.45);
+}
+
+.type-statement {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  color: #fff;
+  text-shadow: 0 2px 40px rgba(4, 6, 9, 0.4);
+}
+
+.type-section {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: 0.9;
+  letter-spacing: -0.035em;
+  color: #fff;
+}
+
+.type-body {
+  font-size: clamp(0.95rem, 0.62vw + 0.82rem, 1.1875rem);
+  line-height: 1.62;
+  color: var(--nova-muted);
+}
+
+.type-meta {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: clamp(0.6875rem, 0.2vw + 0.64rem, 0.8125rem);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.type-numeral {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+@media (max-width: 400px) {
+  .type-hero {
+    font-size: 3.6rem;
+  }
+  .type-statement {
+    font-size: 3rem;
+  }
+  .type-section {
+    font-size: 3rem;
+  }
+}
+
+/* -------------------------------------------------------- liquid glass */
+
+.glass {
+  position: relative;
+  background: rgba(255, 255, 255, 0.055);
+  backdrop-filter: blur(12px) saturate(135%);
+  -webkit-backdrop-filter: blur(12px) saturate(135%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 10px 35px rgba(0, 0, 0, 0.1);
+}
+
+.glass-strong {
+  position: relative;
+  background: rgba(255, 255, 255, 0.11);
+  backdrop-filter: blur(20px) saturate(145%);
+  -webkit-backdrop-filter: blur(20px) saturate(145%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 16px 44px rgba(0, 0, 0, 0.2);
+}
+
+/* One restrained specular highlight, never a second blur pass. */
+.glass-sheen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.16) 0%,
+    rgba(255, 255, 255, 0.02) 34%,
+    rgba(255, 255, 255, 0) 62%
+  );
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass {
+    background: rgba(18, 22, 26, 0.82);
+  }
+  .glass-strong {
+    background: rgba(24, 28, 33, 0.88);
+  }
+}
+
+/* ------------------------------------------------------------ material */
+
+.nova-readability {
+  background: linear-gradient(
+    to top,
+    rgba(5, 6, 7, 0.55),
+    rgba(5, 6, 7, 0.08) 42%,
+    rgba(5, 6, 7, 0.04)
+  );
+}
+
+.nova-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+}
+
+/* ------------------------------------------------------------- stages */
+
+/* Small-viewport units keep the sticky stage stable while mobile browser
+   chrome collapses, instead of resizing on every scroll direction change. */
+.narrative-track {
+  height: 260vh;
+}
+
+.narrative-stage {
+  height: 100vh;
+}
+
+@supports (height: 100svh) {
+  .narrative-track {
+    height: 260svh;
+  }
+  .narrative-stage {
+    height: 100svh;
+  }
+}
+
+/* -------------------------------------------------------------- motion */
+
+.mask-line-wrap {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.09em;
+  margin-bottom: -0.09em;
+}
+
+.mask-line {
+  display: block;
+  will-change: transform;
+}
+
+/* Only the marquee keeps a standing compositor hint. */
+.strip-track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .mask-line,
+  .strip-track {
+    will-change: auto;
+  }
+}

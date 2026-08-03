@@ -1,0 +1,48 @@
+/* --------------------------------------------------------------------------
+   NovaAI design tokens
+   Single source of truth for colour, rhythm, easing and material.
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Palette — the footage supplies the colour, the UI stays neutral. */
+  --nova-black: #070809;
+  --nova-ink: #0a0a0a;
+  --nova-white: #ffffff;
+  --nova-soft-white: rgba(255, 255, 255, 0.86);
+  --nova-muted: rgba(255, 255, 255, 0.62);
+  --nova-line: rgba(255, 255, 255, 0.16);
+  --nova-glass: rgba(255, 255, 255, 0.08);
+  --nova-glass-strong: rgba(255, 255, 255, 0.13);
+  --nova-warm: #e7a15f;
+  --nova-blue: #9eb6c9;
+
+  /* Shared grid */
+  --nova-gutter: clamp(32px, 5vw, 80px);
+  --nova-measure: 40ch;
+
+  /* Radii — assigned explicitly, never globally */
+  --r-pill: 999px;
+  --r-panel: 18px;
+  --r-panel-sm: 14px;
+  --r-media: 10px;
+
+  /* Motion */
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-quiet: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur-headline: 820ms;
+  --dur-copy: 680ms;
+  --dur-panel: 780ms;
+
+  /* Layering */
+  --z-video: 0;
+  --z-scene: 10;
+  --z-page: 20;
+  --z-nav: 60;
+  --z-menu: 70;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --nova-gutter: 20px;
+  }
+}

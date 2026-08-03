@@ -1,0 +1,380 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #000;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="c" width="1920" height="1080"></canvas>
+    <script>
+      /**
+       * Deterministic generative stand-in for the NovaAI hero footage.
+       * Art direction target: hanging white cable forms with glowing gold tips,
+       * an organic white brain-like mass lit from inside by warm orange light,
+       * blue-grey atmosphere, mist, bokeh and fine grain.
+       *
+       * Timeline (t = 0 -> 1) mirrors the three scroll narrative states:
+       *   0.00-0.30  ARRIVAL          wide, misty, cables dominant, core distant
+       *   0.30-0.65  NOISE TO SIGNAL  core resolves, warm light emerges
+       *   0.65-1.00  INSIGHT          brain mass dominant, warm core at full
+       */
+      const W = 1920;
+      const H = 1080;
+      const c = document.getElementById('c');
+      const ctx = c.getContext('2d', { alpha: false });
+
+      const mulberry32 = (a) => () => {
+        a |= 0;
+        a = (a + 0x6d2b79f5) | 0;
+        let x = Math.imul(a ^ (a >>> 15), 1 | a);
+        x = (x + Math.imul(x ^ (x >>> 7), 61 | x)) ^ x;
+        return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+      };
+
+      const smooth = (e0, e1, x) => {
+        const v = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
+        return v * v * (3 - 2 * v);
+      };
+      const lerp = (a, b, k) => a + (b - a) * k;
+
+      // ---------------------------------------------------------------- cables
+      const rc = mulberry32(20260729);
+      const CABLES = Array.from({ length: 22 }, () => {
+        const depth = rc(); // 0 = near, 1 = far
+        return {
+          x: rc(),
+          depth,
+          len: lerp(0.34, 0.78, rc()),
+          w: lerp(5.5, 1.2, depth),
+          swayPhase: rc() * Math.PI * 2,
+          swayAmp: lerp(26, 7, depth),
+          bow: lerp(-0.5, 0.5, rc()),
+          tip: lerp(0.55, 1, rc()),
+          bright: lerp(0.9, 0.35, depth),
+        };
+      });
+
+      // ---------------------------------------------------------------- bokeh
+      const rb = mulberry32(77123);
+      const BOKEH = Array.from({ length: 46 }, () => {
+        const depth = rb();
+        return {
+          x: rb(),
+          y: rb(),
+          r: lerp(90, 12, depth),
+          depth,
+          warm: rb() > 0.72,
+          a: lerp(0.16, 0.05, depth),
+          drift: lerp(0.05, 0.012, depth),
+          phase: rb() * Math.PI * 2,
+        };
+      });
+
+      // ------------------------------------------------------- brain-like mass
+      const rl = mulberry32(5150);
+      const LOBES = Array.from({ length: 26 }, (_, i) => {
+        const ang = (i / 26) * Math.PI * 2 + rl() * 0.35;
+        const rad = lerp(0.42, 1.0, rl());
+        return {
+          ang,
+          rad,
+          size: lerp(0.34, 0.82, rl()),
+          wob: rl() * Math.PI * 2,
+          wobAmp: lerp(0.02, 0.07, rl()),
+        };
+      });
+      const FOLDS = Array.from({ length: 14 }, () => ({
+        a0: rl() * Math.PI * 2,
+        sweep: lerp(0.5, 1.7, rl()),
+        rad: lerp(0.3, 0.92, rl()),
+        w: lerp(4, 13, rl()),
+        a: lerp(0.14, 0.34, rl()),
+      }));
+
+      // grain tile, generated once
+      const grainTile = (() => {
+        const g = document.createElement('canvas');
+        g.width = g.height = 256;
+        const gx = g.getContext('2d');
+        const img = gx.createImageData(256, 256);
+        const rg = mulberry32(31337);
+        for (let i = 0; i < img.data.length; i += 4) {
+          const v = 128 + (rg() - 0.5) * 255;
+          img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+          img.data[i + 3] = 255;
+        }
+        gx.putImageData(img, 0, 0);
+        return g;
+      })();
+
+      function radial(x, y, r, stops) {
+        const g = ctx.createRadialGradient(x, y, 0, x, y, Math.max(1, r));
+        for (const [o, col] of stops) g.addColorStop(o, col);
+        return g;
+      }
+
+      function render(t) {
+        const T = t * Math.PI * 2;
+        // narrative envelopes
+        const arrival = 1 - smooth(0.18, 0.52, t);
+        const signal = smooth(0.22, 0.6, t);
+        const insight = smooth(0.55, 0.95, t);
+        const push = 1 + t * 0.14;
+
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.globalAlpha = 1;
+        ctx.filter = 'none';
+
+        // ---------------------------------------------------------- base field
+        const bg = ctx.createLinearGradient(0, 0, W * 0.35, H);
+        bg.addColorStop(0, '#0c141a');
+        bg.addColorStop(0.45, '#080d12');
+        bg.addColorStop(1, '#05070a');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // camera push, applied to everything below
+        ctx.save();
+        ctx.translate(W / 2, H / 2);
+        ctx.scale(push, push);
+        ctx.translate(-W / 2, -H / 2 - t * 26);
+
+        // ------------------------------------------------------- atmosphere
+        ctx.globalCompositeOperation = 'lighter';
+        const hazes = [
+          [0.28 + Math.sin(T * 0.5) * 0.03, 0.34, 900, 0.075, '158,182,201'],
+          [0.74 + Math.cos(T * 0.4) * 0.025, 0.6, 780, 0.06, '158,182,201'],
+          [0.5, 0.52, 640, 0.05 + insight * 0.05, '231,161,95'],
+        ];
+        for (const [hx, hy, hr, ha, col] of hazes) {
+          ctx.fillStyle = radial(hx * W, hy * H, hr, [
+            [0, `rgba(${col},${ha})`],
+            [0.55, `rgba(${col},${ha * 0.32})`],
+            [1, `rgba(${col},0)`],
+          ]);
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // --------------------------------------------------- far bokeh layer
+        for (const b of BOKEH) {
+          if (b.depth < 0.45) continue;
+          const bx = (b.x + Math.sin(T * b.drift * 8 + b.phase) * 0.02) * W;
+          const by = (b.y + t * b.drift * 1.4) * H;
+          ctx.globalAlpha = b.a * (0.5 + arrival * 0.5);
+          ctx.fillStyle = radial(bx, by, b.r, [
+            [0, b.warm ? 'rgba(231,161,95,0.9)' : 'rgba(190,214,232,0.85)'],
+            [0.6, b.warm ? 'rgba(231,161,95,0.18)' : 'rgba(190,214,232,0.16)'],
+            [1, 'rgba(0,0,0,0)'],
+          ]);
+          ctx.beginPath();
+          ctx.arc(bx, by, b.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+
+        // ------------------------------------------------------------ cables
+        // Cables read strongest on arrival and recede as the core takes over.
+        const cableFade = lerp(1, 0.28, insight);
+        for (const cb of CABLES) {
+          const near = 1 - cb.depth;
+          const x = cb.x * W + Math.sin(T * 0.6 + cb.swayPhase) * cb.swayAmp;
+          const drop = cb.len * H * lerp(0.9, 1.06, near);
+          const topY = -60;
+          const endY = topY + drop;
+          const bend = Math.sin(T * 0.5 + cb.swayPhase) * 26 * near + cb.bow * 40;
+
+          ctx.globalCompositeOperation = 'lighter';
+          ctx.filter = `blur(${lerp(2.4, 0.6, near)}px)`;
+
+          const grad = ctx.createLinearGradient(0, topY, 0, endY);
+          grad.addColorStop(0, `rgba(255,255,255,0)`);
+          grad.addColorStop(0.22, `rgba(226,236,244,${0.1 * cb.bright * cableFade})`);
+          grad.addColorStop(0.78, `rgba(240,246,251,${0.3 * cb.bright * cableFade})`);
+          grad.addColorStop(1, `rgba(255,250,244,${0.42 * cb.bright * cableFade})`);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = cb.w;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(x, topY);
+          ctx.bezierCurveTo(x + bend * 0.3, topY + drop * 0.45, x + bend, endY - drop * 0.2, x + bend, endY);
+          ctx.stroke();
+
+          // glowing gold tip
+          const tipA = cb.tip * cb.bright * cableFade * (0.55 + signal * 0.45);
+          ctx.filter = `blur(${lerp(9, 3, near)}px)`;
+          const tr = lerp(15, 46, near);
+          ctx.fillStyle = radial(x + bend, endY, tr, [
+            [0, `rgba(255,214,163,${0.9 * tipA})`],
+            [0.35, `rgba(231,161,95,${0.5 * tipA})`],
+            [1, 'rgba(231,161,95,0)'],
+          ]);
+          ctx.beginPath();
+          ctx.arc(x + bend, endY, tr, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.filter = 'none';
+          ctx.fillStyle = `rgba(255,236,213,${0.85 * tipA})`;
+          ctx.beginPath();
+          ctx.arc(x + bend, endY, Math.max(1.1, cb.w * 0.42), 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.filter = 'none';
+
+        // -------------------------------------------------- organic core mass
+        // Sits low-right on arrival, drifts to centre and grows as it resolves.
+        const cx = lerp(W * 0.64, W * 0.585, insight);
+        const cy = lerp(H * 0.68, H * 0.47, insight) + Math.sin(T * 0.35) * 10;
+        const R = lerp(140, 300, smooth(0, 1, t));
+        const massA = lerp(0.12, 0.62, signal);
+
+        // warm halo behind the mass
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.filter = 'blur(46px)';
+        ctx.fillStyle = radial(cx, cy, R * 1.9, [
+          [0, `rgba(231,161,95,${0.11 + insight * 0.11})`],
+          [0.4, `rgba(214,128,62,${0.05 + insight * 0.06})`],
+          [1, 'rgba(214,128,62,0)'],
+        ]);
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 1.9, 0, Math.PI * 2);
+        ctx.fill();
+
+        // lobes -> organic white mass
+        ctx.filter = `blur(${lerp(30, 16, signal)}px)`;
+        for (const lo of LOBES) {
+          const wob = Math.sin(T * 0.7 + lo.wob) * lo.wobAmp;
+          const rr = (lo.rad + wob) * R;
+          const lx = cx + Math.cos(lo.ang) * rr * 0.86;
+          const ly = cy + Math.sin(lo.ang) * rr * 0.7;
+          const ls = lo.size * R * 0.62;
+          ctx.fillStyle = radial(lx, ly, ls, [
+            [0, `rgba(238,243,248,${0.19 * massA})`],
+            [0.45, `rgba(206,222,234,${0.08 * massA})`],
+            [1, 'rgba(206,222,234,0)'],
+          ]);
+          ctx.beginPath();
+          ctx.arc(lx, ly, ls, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // dense pearl body
+        ctx.filter = 'blur(22px)';
+        ctx.fillStyle = radial(cx - R * 0.12, cy - R * 0.14, R * 0.98, [
+          [0, `rgba(246,249,252,${0.3 * massA})`],
+          [0.5, `rgba(220,232,241,${0.13 * massA})`],
+          [1, 'rgba(220,232,241,0)'],
+        ]);
+        ctx.beginPath();
+        ctx.arc(cx, cy, R, 0, Math.PI * 2);
+        ctx.fill();
+
+        // internal warm light — the glowing core
+        ctx.filter = 'blur(30px)';
+        const coreA = 0.26 + insight * 0.4;
+        ctx.fillStyle = radial(cx + R * 0.06, cy + R * 0.1, R * 0.78, [
+          [0, `rgba(255,199,138,${0.58 * coreA})`],
+          [0.3, `rgba(231,161,95,${0.34 * coreA})`],
+          [0.68, `rgba(190,110,52,${0.12 * coreA})`],
+          [1, 'rgba(190,110,52,0)'],
+        ]);
+        ctx.beginPath();
+        ctx.arc(cx, cy, R * 0.9, 0, Math.PI * 2);
+        ctx.fill();
+
+        // brain-like folds, drawn subtractively for structure
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.filter = 'blur(7px)';
+        for (const f of FOLDS) {
+          ctx.strokeStyle = `rgba(12,18,24,${f.a * massA * (0.5 + insight * 0.5)})`;
+          ctx.lineWidth = f.w;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.ellipse(
+            cx,
+            cy,
+            f.rad * R * 0.86,
+            f.rad * R * 0.66,
+            Math.sin(T * 0.3 + f.a0) * 0.25,
+            f.a0 + T * 0.06,
+            f.a0 + T * 0.06 + f.sweep
+          );
+          ctx.stroke();
+        }
+
+        // specular rim
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.filter = 'blur(12px)';
+        ctx.strokeStyle = `rgba(255,255,255,${0.3 * massA})`;
+        ctx.lineWidth = 7;
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, R * 0.9, R * 0.74, -0.3, Math.PI * 1.05, Math.PI * 1.75);
+        ctx.stroke();
+        ctx.filter = 'none';
+
+        // -------------------------------------------------- near bokeh layer
+        for (const b of BOKEH) {
+          if (b.depth >= 0.45) continue;
+          const bx = (b.x + Math.sin(T * b.drift * 6 + b.phase) * 0.035) * W;
+          const by = (b.y - t * b.drift * 2.2) * H;
+          ctx.globalAlpha = b.a * lerp(1, 0.55, insight);
+          ctx.filter = 'blur(6px)';
+          ctx.fillStyle = radial(bx, by, b.r, [
+            [0, b.warm ? 'rgba(231,161,95,0.55)' : 'rgba(200,220,236,0.4)'],
+            [0.55, b.warm ? 'rgba(231,161,95,0.12)' : 'rgba(200,220,236,0.09)'],
+            [1, 'rgba(0,0,0,0)'],
+          ]);
+          ctx.beginPath();
+          ctx.arc(bx, by, b.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.filter = 'none';
+        ctx.globalAlpha = 1;
+        ctx.restore();
+
+        // ------------------------------------------------------------ mist
+        ctx.globalCompositeOperation = 'lighter';
+        const mist = ctx.createLinearGradient(0, H, 0, H * 0.3);
+        mist.addColorStop(0, 'rgba(140,166,188,0.11)');
+        mist.addColorStop(1, 'rgba(140,166,188,0)');
+        ctx.fillStyle = mist;
+        ctx.fillRect(0, 0, W, H);
+
+        // ----------------------------------------------------------- vignette
+        ctx.globalCompositeOperation = 'source-over';
+        const vig = ctx.createRadialGradient(W / 2, H * 0.5, H * 0.28, W / 2, H * 0.5, H * 1.02);
+        vig.addColorStop(0, 'rgba(0,0,0,0)');
+        vig.addColorStop(1, 'rgba(2,4,6,0.72)');
+        ctx.fillStyle = vig;
+        ctx.fillRect(0, 0, W, H);
+
+        // -------------------------------------------------------------- grain
+        ctx.globalCompositeOperation = 'overlay';
+        ctx.globalAlpha = 0.06;
+        const ox = Math.floor(mulberry32(Math.floor(t * 10000))() * 256);
+        const oy = Math.floor(mulberry32(Math.floor(t * 10000) + 9)() * 256);
+        const pat = ctx.createPattern(grainTile, 'repeat');
+        ctx.save();
+        ctx.translate(-ox, -oy);
+        ctx.fillStyle = pat;
+        ctx.fillRect(0, 0, W + 256, H + 256);
+        ctx.restore();
+        ctx.globalAlpha = 1;
+        ctx.globalCompositeOperation = 'source-over';
+      }
+
+      window.__render = render;
+      window.__ready = true;
+      render(0);
+    </script>
+  </body>
+</html>
